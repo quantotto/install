@@ -10,6 +10,12 @@ function onerror() {
 
 ./precheck.sh
 
+ARCHIVES=libarchives
+ubuntu_release=`lsb_release -a 2>/dev/null | grep "Release:" | awk '{ print $2; }'`
+if [[ ${ubuntu_release} < 18.04 ]]; then
+    ARCHIVES=bsdtar
+fi
+
 ACCOUNT=quantotto
 APP_FOLDER=/opt/quantotto
 
@@ -21,7 +27,7 @@ sudo apt-get -yy install \
     coreutils quilt parted \
     qemu-user-static debootstrap \
     zerofree zip dosfstools \
-    bsdtar libcap2-bin grep \
+    ${ARCHIVES} libcap2-bin grep \
     rsync xz-utils file git curl bc \
     python3-venv python3-dev \
     libsasl2-dev libldap2-dev libssl-dev \
