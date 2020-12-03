@@ -10,7 +10,7 @@ function onerror() {
 
 ./precheck.sh
 
-ARCHIVES=libarchives
+ARCHIVES=libarchive-tools
 ubuntu_release=`lsb_release -a 2>/dev/null | grep "Release:" | awk '{ print $2; }'`
 if [[ ${ubuntu_release} < 18.04 ]]; then
     ARCHIVES=bsdtar
