@@ -55,7 +55,7 @@ echo "Installing Quantotto Server CLI package"
 pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server
 
 echo "Cloning rpi image builder repo"
-git clone git@github.com:quantotto/rpi ${APP_FOLDER}/rpi
+git clone https://github.com/quantotto/rpi ${APP_FOLDER}/rpi
 echo "Setting up environment variables"
 
 sudo tee -a /etc/profile.d/quantotto.sh >/dev/null <<EOF
