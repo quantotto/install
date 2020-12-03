@@ -13,7 +13,7 @@ if [ -s ${QUANTOTTO_HOME}/.env ] && [ -d ${VIRTUAL_ENV} ]; then
     qtoserver deployment stop 1>/dev/null
 fi
 sudo rm -rf /etc/profile.d/quantotto.sh
-sudo rm -rf ${QUANTOTTO_HOME}
+sudo rm -rf /opt/quantotto
 
 echo ""
 echo "***********************************************************************"

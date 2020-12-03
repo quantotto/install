@@ -70,3 +70,10 @@ sudo chown -R ${ACCOUNT}:${ACCOUNT} ${APP_FOLDER}
 sudo chmod -R 775 ${APP_FOLDER}
 
 echo "All done!"
+echo ""
+echo "***********************************************************************"
+echo "Quantotto application was uninstalled."
+echo ""
+echo "Please logout / login for environment settings to take effect."
+echo "***********************************************************************"
+echo ""
