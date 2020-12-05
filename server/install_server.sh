@@ -55,9 +55,21 @@ echo "Installing Quantotto Server CLI package"
 pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server
 
 echo "Cloning rpi image builder repo"
-git clone https://github.com/quantotto/rpi ${APP_FOLDER}/rpi
-echo "Setting up environment variables"
+git clone https://github.com/RPi-Distro/pi-gen ${APP_FOLDER}/pi-gen
+sudo tee -a ${APP_FOLDER}/pi-gen/config >/dev/null <<EOF
+IMG_NAME="quantotto"
+DEPLOY_DIR="\$BASE_DIR/base_image"
+DEPLOY_ZIP=0
+LOCALE_DEFAULT="en_US.UTF-8"
+KEYBOARD_KEYMAP="us"
+KEYBOARD_LAYOUT="English (US)"
+TIMEZONE_DEFAULT="America/Los_Angeles"
+ENABLE_SSH=1
+EOF
+touch ${APP_FOLDER}/pi-gen/stage3/SKIP ${APP_FOLDER}/pi-gen/stage4/SKIP ${APP_FOLDER}/pi-gen/stage5/SKIP
+touch ${APP_FOLDER}/pi-gen/stage4/SKIP_IMAGES ${APP_FOLDER}/pi-gen/stage5/SKIP_IMAGES
 
+echo "Setting up environment variables"
 sudo tee -a /etc/profile.d/quantotto.sh >/dev/null <<EOF
 export QUANTOTTO_HOME=${APP_FOLDER}
 export VIRTUAL_ENV="${APP_FOLDER}/.venv"
