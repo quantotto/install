@@ -15,7 +15,10 @@ fi
 sudo rm -rf /etc/profile.d/quantotto.sh
 sudo rm -rf /opt/quantotto
 
-docker network rm quantotto_network
+qnw=$(docker network ls | grep quantotto_network)
+if [ ! -z "${qnw}" ]; then
+    docker network rm quantotto_network
+fi
 
 echo ""
 echo "***********************************************************************"
