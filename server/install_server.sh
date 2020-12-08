@@ -32,7 +32,7 @@ sudo apt-get -yy install \
     python3-venv python3-dev \
     libsasl2-dev libldap2-dev libssl-dev \
     docker-compose build-essential \
-    libpq-dev postgresql-client
+    libpq-dev postgresql-client nano
 
 echo -n "Creating application folder (${APP_FOLDER})... "
 sudo mkdir -p ${APP_FOLDER}
