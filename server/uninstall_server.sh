@@ -15,8 +15,11 @@ fi
 sudo rm -rf /etc/profile.d/quantotto.sh
 sudo rm -rf /opt/quantotto
 
+echo "removed files"
+
 qnw=$(docker network ls | grep quantotto_network)
 if [ ! -z "${qnw}" ]; then
+    echo "Removing network quantotto_network"
     docker network rm quantotto_network
 fi
 
