@@ -15,6 +15,8 @@ fi
 sudo rm -rf /etc/profile.d/quantotto.sh
 sudo rm -rf /opt/quantotto
 
+docker network rm quantotto_network
+
 echo ""
 echo "***********************************************************************"
 echo "Quantotto application was uninstalled."
