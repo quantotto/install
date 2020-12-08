@@ -17,7 +17,7 @@ sudo rm -rf /opt/quantotto
 
 echo "removed files"
 
-qnw=$(docker network ls | grep quantotto_network)
+qnw=$( docker network ls | grep quantotto_network || true )
 
 echo "Checking network exists"
 if [ ! -z "${qnw}" ]; then
