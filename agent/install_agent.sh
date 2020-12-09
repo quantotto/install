@@ -10,3 +10,9 @@ function onerror() {
 
 ./precheck.sh
 
+
+ACCOUNT=quantotto
+APP_FOLDER=/opt/quantotto
+
+echo "Updating system"
+sudo apt-get -yy update && sudo apt-get -yy upgrade
