@@ -8,14 +8,14 @@ function onerror() {
     echo "Error uninstalling Quantotto Server CLI"
 }
 
-echo "Uninstalling Quantotto"
+echo "Uninstalling Quantotto Server"
 if [ -s ${QUANTOTTO_HOME}/.env ] && [ -d ${VIRTUAL_ENV} ]; then
     qtoserver deployment stop 1>/dev/null
 fi
 sudo rm -rf /etc/profile.d/quantotto.sh
 sudo rm -rf /opt/quantotto
 
-echo "removed files"
+echo "Removed application files"
 
 qnw=$( docker network ls | grep quantotto_network || true )
 

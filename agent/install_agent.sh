@@ -56,16 +56,31 @@ echo -n "Activated virtual environment"
 
 echo "Installing Quantotto Agent CLI package"
 pip install -U quantotto.cli-agent --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io
-
 cp simple.py ${VIRTUAL_ENV}/lib/python3.7/site-packages/zeep/xsd/types/simple.py
-cp qtoagent_service.sh ${QUANTOTTO_HOME}/
-sudo cp qtoagent.service /lib/systemd/system/
 
+cp qtoagent_service.sh ${QUANTOTTO_HOME}/
 #cp customer_config.yaml ${QUANTOTTO_HOME}/
 #cp quantotto.crt ${QUANTOTTO_HOME}/
 
+echo "Setting permissions"
 sudo chown -R ${ACCOUNT}:${ACCOUNT} ${QUANTOTTO_HOME}
 sudo chmod ugo+x ${QUANTOTTO_HOME}/qtoagent_service.sh
 
+echo "Copying environment profile"
 sudo cp quantotto.sh /etc/profile.d/
 sudo chmod ugo+x /etc/profile.d/quantotto.sh
+
+# install service
+echo "Installing qtoagent service"
+sudo cp qtoagent.service /lib/systemd/system/
+sudo systemctl enable qtoagent.service
+sudo systemctl start qtoagent.service
+
+
+echo ""
+echo "***********************************************************************"
+echo "Quantotto Agent applications installed successfully."
+echo ""
+echo "Please logout / login for environment variables to take effect"
+echo "***********************************************************************"
+echo ""
