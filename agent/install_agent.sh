@@ -56,7 +56,8 @@ echo -n "Activated virtual environment"
 
 echo "Installing Quantotto Agent CLI package"
 pip install -U quantotto.cli-agent --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io
-cp simple.py ${VIRTUAL_ENV}/lib/python3.7/site-packages/zeep/xsd/types/simple.py
+ZEEP_FOLDER=$( dirname $( python -c "import zeep; print(zeep.__file__)" ) )
+cp simple.py ${ZEEP_FOLDER}/xsd/types/simple.py
 
 cp qtoagent_service.sh ${QUANTOTTO_HOME}/
 #cp customer_config.yaml ${QUANTOTTO_HOME}/
