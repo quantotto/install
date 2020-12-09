@@ -1,0 +1,11 @@
+[Unit]
+Description=Quantotto Agent Service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/opt/quantotto/qtoagent_service.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
