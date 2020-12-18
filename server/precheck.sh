@@ -33,7 +33,7 @@ fi
 CURRENT_ERROR_MSG="Incompatible Python; should be ${supported_python}+"
 echo "checking Python version"
 pyver=`python3 -c "import sys; vi = sys.version_info; print(f'{vi.major}.{vi.minor}')"`
-if [[ ${pyver} < ${supported_python} ]]; then
+if awk 'BEGIN { exit !('${pyver}' < '${supported_python}')}'; then
     echo -e "${RED}Incompatibe Python version (${pyver}); Should be ${supported_python}+${NC}"
     exit 1
 fi
@@ -48,7 +48,7 @@ echo -e "${GREEN}Docker - success${NC}"
 CURRENT_ERROR_MSG="Incompatibe Ubuntu release; Should be ${supported_ubuntu}+"
 echo "checking Ubuntu release"
 ubuntu_release=`lsb_release -a 2>/dev/null | grep "Release:" | awk '{ print $2; }'`
-if [[ ${ubuntu_release} < ${supported_ubuntu} ]]; then
+if awk 'BEGIN { exit !('${ubuntu_release}' < '${supported_ubuntu}')}'; then
     echo -e "${RED}Incompatibe Ubuntu release (${ubuntu_release}); Should be ${supported_ubuntu}+${NC}"
     exit 1
 fi
