@@ -84,7 +84,7 @@ sudo chmod -R 775 ${APP_FOLDER}
 echo "All done!"
 echo ""
 echo "***********************************************************************"
-echo "Quantotto application was uninstalled."
+echo "Quantotto application was installed."
 echo ""
 echo "Please logout / login for environment settings to take effect."
 echo "***********************************************************************"
