@@ -47,6 +47,11 @@ echo -e "${GREEN}Docker - success${NC}"
 
 CURRENT_ERROR_MSG="Incompatibe Ubuntu release; Should be ${supported_ubuntu}+"
 echo "checking Ubuntu release"
+distributor=`lsb_release -a 2>/dev/null | grep "Distributor ID:" | awk '{ print $3; }'`
+if [ "${distributor}" != "Ubuntu" ]; then
+    echo -e "${RED}Incompatibe OS distributor (${distributor}); Should be Ubuntu${NC}"
+    exit 1
+fi
 ubuntu_release=`lsb_release -a 2>/dev/null | grep "Release:" | awk '{ print $2; }'`
 if awk 'BEGIN { exit !('${ubuntu_release}' < '${supported_ubuntu}')}'; then
     echo -e "${RED}Incompatibe Ubuntu release (${ubuntu_release}); Should be ${supported_ubuntu}+${NC}"
