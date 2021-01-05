@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faces_recognizer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faces_recognizer
+  template:
+    metadata:
+      labels:
+        app: faces_recognizer
+    spec:
+      containers:
+      - name: faces_recognizer
+        image: quantotto/faces_recognizer:2.12.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        env:
+        - name: CUSTOMER_ID
+          value: ${CUSTOMER_ID}
+        - name: ACTOR_SYSTEM_LISTEN_ON
+          value: "faces_recognizer:15100"
+        - name: MC_ACTOR_SYSTEM
+          value: "faces_recognizer:15100"
+        - name: ACTOR_SYSTEM_PORT_RANGE
+          value: "15101-15299"
+        - name: SCENARIO_GROUPS
+          value: ${SCENARIO_GROUPS}
+        - name: CONFIG_API_URL
+          value: http://config_api:5000/v1
+        - name: DATA_API_URL
+          value: http://data_api:5000/v1
+        - name: MGMT_API_URL
+          value: http://mgmt_api:5000/v1
+        - name: FERNET_KEY
+          value: ${FERNET_KEY}
+        - name: HYDRA_API_URL
+          value: ${HYDRA_API_URL}
+        - name: HYDRA_PUBLIC_URL
+          value: ${HYDRA_INTERNAL_PUBLIC_URL}
+        - name: HYDRA_CONFIG_CLIENT_ID
+          value: ${HYDRA_CONFIG_CLIENT_ID}
+        - name: HYDRA_CONFIG_CLIENT_SECRET
+          value: ${HYDRA_CONFIG_CLIENT_SECRET}
+        - name: HYDRA_CLIENT_ID
+          value: ${CUSTOMER_ID}
+        - name: HYDRA_CLIENT_SECRET
+          value: ${HYDRA_CUSTOMER_CLIENT_SECRET}
+        - name: OAUTHLIB_INSECURE_TRANSPORT
+          value: "yes"
+        - name: ARCHIVE_DOMAIN
+          value: "faces_archive.data.quantotto.io"
+        - name: H5_SERV_ENDPOINT
+          value: "http://h5serv:5000"
+        - name: KNOWN_FACES_GROUP
+          value: ${KNOWN_FACES_GROUP}
+        - name: FACE_CLASSIFIER_NAME
+          value: ${FACE_CLASSIFIER_NAME}
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred

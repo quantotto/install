@@ -1,0 +1,46 @@
+apiVersion: v2
+name: quantotto
+description: Helm chart for Quantotto Server Microservices
+type: application
+version: 0.1.0
+appVersion: 3.1.0
+dependencies:
+  - name: postgresql
+    version: 10.2.1
+    repository: https://charts.bitnami.com/bitnami
+  - name: hydra
+    version: 0.5.0
+    repository: https://k8s.ory.sh/helm/charts
+  - name: influxdb
+    version: 4.8.10
+    repository: https://helm.influxdata.com/
+  - name: mongodb
+    version: 10.3.3
+    repository: https://charts.bitnami.com/bitnami
+  - name: rabbitmq
+    version: 8.6.1
+    repository: https://charts.bitnami.com/bitnami
+  - name: redis
+    version: 12.2.4
+    repository: https://charts.bitnami.com/bitnami
+  - name: openldap
+    version: 2.0.4
+    repository: https://jp-gouin.github.io/helm-openldap/
+  - name: neo4j
+    version: 4.2.0-1
+  - name: auth_api
+    version: 0.1.0
+  - name: config_api
+    version: 0.1.0
+  - name: data_api
+    version: 0.1.0
+  - name: management_api
+    version: 0.1.0
+  - name: faces_archive_api
+    version: 0.1.0
+  - name: ftp
+    version: 0.1.0
+  - name: h5serv
+    version: 0.1.0
+  - name: nginx
+    version: 0.1.0

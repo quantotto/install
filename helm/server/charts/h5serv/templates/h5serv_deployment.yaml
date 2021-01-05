@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: h5serv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: h5serv
+  template:
+    metadata:
+      labels:
+        app: h5serv
+    spec:
+      containers:
+      - name: h5serv
+        image: quantotto/h5serv:2.12.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: Domain
+          value: "data.quantotto.io"
+        volumeMounts:
+        - name: faces-archive-data
+          mountPath: /data
+      volumes:
+      - name: faces-archive-data
+        hostPath:
+          path: /surveillancedata/faces-archive-data
+      restartPolicy: Always
+      nodeSelector:
+        dbnode: "yes"
+      imagePullSecrets:
+      - name: regcred

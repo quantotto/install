@@ -1,0 +1,6 @@
+apiVersion: v2
+name: real_time_data
+description: Helm chart for Quantotto Real Time Data
+type: application
+version: 0.1.0
+appVersion: 3.1.0

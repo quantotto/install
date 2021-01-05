@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: h5serv
+  labels:
+    app: h5serv
+spec:
+  selector:
+    app: h5serv
+  ports:
+  - name: "h5serv"
+    port: 5000
+    targetPort: 5000
+status:
+  loadBalancer: {}

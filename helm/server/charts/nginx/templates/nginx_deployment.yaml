@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: quantotto/nginx:${QUANTOTTO_VERSION_TAG}
+        name: nginx
+        ports:
+        - containerPort: 15000
+        - containerPort: 15001
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        env:
+        - name: RABBITMQ_NODENAME
+          value: "nginx"
+        - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+          value: "0.20"
+        volumeMounts:
+        - name: nginx-data
+          mountPath: /tmp/data
+        - name: nginx-certs
+          mountPath: /etc/nginx/certs
+      volumes:
+      - name: nginx-data
+        hostPath:
+          path: /surveillancedata/nginx-data
+      - name: nginx-certs
+        hostPath:
+          path: ${SSL_CERTS_FOLDER}
+      restartPolicy: Always

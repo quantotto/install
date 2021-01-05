@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config_api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config_api
+  template:
+    metadata:
+      labels:
+        app: config_api
+    spec:
+      containers:
+      - name: config_api
+        image: quantotto/config_api:2.12.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: CONFIG_FILE
+          value: /myconfig/myconfig.yaml
+        - name: FERNET_KEY
+          value: FERNET_KEY
+        - name: API_PACKAGE
+          value: "quantotto.config_api"
+        - name: HYDRA_API_URL
+          value: HYDRA_API_URL
+        - name: OAUTHLIB_INSECURE_TRANSPORT
+          value: "yes"
+        volumeMounts:
+        - name: myconfig-data
+          mountPath: /myconfig
+      volumes:
+      - name: myconfig-data
+        hostPath:
+          path: /surveillancedata/myconfig-data
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred

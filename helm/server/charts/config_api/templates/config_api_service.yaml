@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: config_api
+  labels:
+    app: config_api
+spec:
+  selector:
+    app: config_api
+  ports:
+  - name: "configapi"
+    port: 5000
+    targetPort: 5000
+status:
+  loadBalancer: {}

@@ -1,0 +1,18 @@
+dependencies:
+- name: portal
+  repository: ""
+  version: 0.1.0
+- name: real_time_data
+  repository: ""
+  version: 0.1.0
+- name: faces_recognizer
+  repository: ""
+  version: 0.1.0
+- name: training_scheduler
+  repository: ""
+  version: 0.1.0
+- name: triggers_runner
+  repository: ""
+  version: 0.1.0
+digest: sha256:5a087802544fb548ea079430b69697bc78113af5a0f612dbad666b87dc9e7db1
+generated: "2021-01-04T18:45:02.308649-08:00"
