@@ -28,6 +28,8 @@ dependencies:
     repository: https://jp-gouin.github.io/helm-openldap/
   - name: neo4j
     version: 4.2.0-1
+  - name: qdb
+    version: 0.1.0
   - name: auth_api
     version: 0.1.0
   - name: config_api
