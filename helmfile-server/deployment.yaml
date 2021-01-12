@@ -1,4 +1,4 @@
-portalFqdn: ""
+portalFqdn: "portal.quantotto.io"
 
 image:
   repository: "quantotto"
@@ -14,8 +14,8 @@ qdb:
 openldap:
   adminPassword: ""
 
-config_api:
-  clientSecret: ""
+configApi:
+  clientSecret: "configApi.clientSecret"
 
 ftp:
   masqueradeAddress: ""
@@ -39,7 +39,13 @@ rabbitmq:
 
 
 keys:
-  fernet: ""
+  fernet: "fernetkey"
+  privateKey: "myPrivateKey"
+  privateKeyPassword: "privateKeyPassword$"
+
+cert:
+  fullChain: "fullchain cert"
+  privateKey: "abrakadabra"
 
 volumes:
   - kind: PersistentVolumeClaim

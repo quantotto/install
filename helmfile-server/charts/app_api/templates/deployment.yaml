@@ -27,9 +27,9 @@ spec:
         - containerPort: 5000
         envFrom:
         - configMapRef:
-            name: api_common
+            name: api-common
         - configMapRef:
-            name: {{ .Values.api.name }}
+            name: {{ .Values.api.name | replace "_" "-" }}
         - secretRef:
             name: common
         volumeMounts:
