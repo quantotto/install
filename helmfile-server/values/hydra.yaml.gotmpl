@@ -1,0 +1,8 @@
+hydra:
+  config:
+    dsn: "postgres://{{ .Values.qdb.user }}:{{ .Values.qdb.password }}@{{ .Values.qdb.host }}:{{ .Values.qdb.port }}/hydra?ssl_enable=false"
+    urls:
+      self:
+        issuer: "https://{{ .Values.portal_fqdn }}/hydra-public/"
+      login: "https://{{ .Values.portal_fqdn }}/#/login"
+      consent: "https://{{ .Values.portal_fqdn }}/#/consent"

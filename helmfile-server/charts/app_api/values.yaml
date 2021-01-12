@@ -1,0 +1,13 @@
+api:
+  name: ""
+  group: api
+  resources: {}
+  fernetKey: ""
+
+image:
+  repository: ""
+  tag: ""
+
+volumes: []
+
+volumeMounts: []

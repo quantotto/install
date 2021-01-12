@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config_api
+data:
+  API_PACKAGE: {{ .Values.configApi.package }}
+  HYDRA_API_URL: {{ .Values.hydra.apiUrl }}
+  CONFIG_FILE: {{ .Values.configApi.configFile }}
+  OAUTHLIB_INSECURE_TRANSPORT: "yes"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config_api_files
+data:
+  myconfig.yaml: |-
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api_common
+data:
+  HYDRA_API_URL: {{ .Values.hydra.apiUrl }}
+  HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl }}
+  CONFIG_API_URL: {{ .Values.configApi.url }}
+  HYDRA_CONFIG_CLIENT_ID: {{ .Values.configApi.clientId }}
+  OAUTHLIB_INSECURE_TRANSPORT: "yes"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth_api
+data:
+  API_PACKAGE: {{ .Values.authApi.package }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mgmt_api
+data:
+  API_PACKAGE: {{ .Values.managementApi.package }}
+  REDIS_URL: {{ .Values.managementApi.redisUrl }}
+  BASE_DATA_PATH: {{ .Values.managementApi.baseDataPath }}
+  LICENSE_PUBLIC_KEY_PATH: {{ .Values.managementApi.licensePublicKeyPath }}
+  PACKAGES_FOLDER: {{ .Values.managementApi.packagesFolder }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mgmt_api_files
+data:
+  license_public_key.pem: |-
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data_api
+data:
+  API_PACKAGE: {{ .Values.dataApi.package }}
+  PRIVATE_KEY_PATH: {{ .Values.dataApi.privateKeyPath }}
+  MEDIA_SERVER_FQDN: {{ .Values.dataApi.mediaServerFqdn }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faces_archive_api
+data:
+  API_PACKAGE: {{ .Values.facesArchiveApi.package }}
+  H5_SERV_ENDPOINT: {{ .Values.facesArchiveApi.h5servEndpoint }}
+  ARCHIVE_DOMAIN: {{ .Values.facesArchiveApi.archiveDomain }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq_env
+data:
+  RABBITMQ_NODENAME: rabbitmq
+  RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "0.20"

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.api.name }}
+  labels:
+    app: {{ .Values.api.name }}
+    group: {{ .Values.api.group }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.api.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.api.name }}
+        group: {{ .Values.api.group }}
+    spec:
+      volumes:
+{{ toYaml .Values.volumes | indent 8 }}
+      containers:
+      - name: {{ .Values.api.name }}
+        image: "{{ .Values.image.repository }}/api_base:{{ .Values.image.tag }}"
+        resources:
+{{ toYaml .Values.api.resources | indent 10 }}
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: api_common
+        - configMapRef:
+            name: {{ .Values.api.name }}
+        - secretRef:
+            name: common
+        volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 10 }}
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred

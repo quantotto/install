@@ -1,0 +1,29 @@
+hydra:
+  apiUrl: http://hydra_api:4444
+  internalPublicUrl: http://hydra_api:4445
+
+configApi:
+  package: "quantotto.config_api"
+  configFile: /myconfig/myconfig.yaml
+  url: http://config_api:5000/v1
+  clientId: config_api_backendapp
+
+authApi:
+  package: "quantotto.auth_api"
+
+managementApi:
+  package: "quantotto.mgmt_api"
+  redisUrl: "redis://redis:6379"
+  baseDataPath: /training
+  licensePublicKeyPath: ./license_public_key.pem
+  packagesFolder: /packages
+
+dataApi:
+  package: "quantotto.data_api"
+  privateKeyPath: /opt/quantotto/keys/private_key.pem
+  mediaServerFqdn: {{ .Values.portalFqdn }}
+
+facesArchiveApi:
+  package: "quantotto.faces_archive_api"
+  h5servEndpoint: http://h5serv:5000
+  archiveDomain: faces_archive.data.quantotto.io

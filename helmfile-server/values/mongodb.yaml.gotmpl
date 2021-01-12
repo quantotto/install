@@ -1,0 +1,8 @@
+auth:
+  username: {{ .Values.mongodb.user }}
+  password: {{ .Values.mongodb.password }}
+
+persistence:
+  existingClaim: mongodb-data-pvc
+
+command: --wiredTigerCacheSizeGB=1

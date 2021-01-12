@@ -5,13 +5,12 @@ metadata:
   labels:
     app: qdb
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: qdb
   ports:
-  - name: "postgres"
-    port: 5432
-    targetPort: 5432
-    nodePort: 30432
+  - name: qdb
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.externalPort }}
 status:
   loadBalancer: {}

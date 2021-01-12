@@ -1,0 +1,40 @@
+image:
+  repository: {{ .Values.image.repository }}
+  tag: {{ .Values.image.tag }}
+
+api:
+  name: mgmt_api
+  group: api
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+  fernetKey: {{ .Values.fernetKey }}
+
+hydra:
+    internalPublicApiURL: "http://nginx:15001/hydra-public"
+    configClientID: config_api_backendapp
+    configClientSecret: {{ .Values.config.clientSecret }}
+
+volumeMounts:
+  - name: training-data
+    mountPath: /training
+  - name: packages
+    mountPath: /packages
+  - name: public-key-pem
+    mountPath: /opt/quantotto/
+
+volumes:
+  - name: training-data
+    persistentVolumeClaim:
+      claimName: training-data-pvc
+  - name: packages
+    persistentVolumeClaim:
+      claimName: packages-pvc
+  - name: public-key-pem
+    configMap:
+      name: mgmt_api_files
+      items:
+      - key: license_public_key.pem
+        path: license_public_key.pem
+

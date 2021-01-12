@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: qdb
+  template:
+    metadata:
+      labels:
+        app: qdb
+    spec:
+      volumes:
+        - name: qdb-data
+          persistentVolumeClaim:
+            claimName: qdb-data-pvc
+      containers:
+      - name: qdb
+        image: "{{ .Values.image.repository }}/db:{{ .Values.image.tag }}"
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: qdb
+              key: user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: qdb
+              key: password
+        volumeMounts:
+        - name: qdb-data
+          mountPath: /var/lib/postgresql/data
+          readOnly: false
+      restartPolicy: {{ default "Always" .Values.restartPolicy | quote }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret | quote }}

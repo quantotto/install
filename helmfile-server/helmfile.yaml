@@ -1,0 +1,130 @@
+environments:
+  default:
+    values:
+    - deployment.yaml
+
+repositories:
+  - name: stable
+    url: https://charts.helm.sh/stable
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: ory
+    url: https://k8s.ory.sh/helm/charts
+  - name: influxdata
+    url: https://helm.influxdata.com/
+  - name: openldap
+    url: https://jp-gouin.github.io/helm-openldap/
+
+releases:
+  - name: config
+    chart: ./chart/config
+    values:
+      - ./values/config.yaml.gotmpl
+  - name: volumes
+    chart: ./chart/volumes
+    values:
+      - ./values/volumes.yaml.gotmpl
+  - name: qdb
+    chart: ./charts/qdb
+    values:
+      - ./values/qdb.yaml.gotmpl
+    needs:
+      - config
+      - volumes
+  - name: openldap
+    chart: openldap/openldap
+    version: 2.0.4
+    values:
+      - ./values/openldap.yaml.gotmpl
+  - name: hydra
+    chart: ory/hydra
+    version: 0.5.0
+    values:
+      - ./values/hydra.yaml.gotmpl
+    needs:
+      - qdb
+  - name: config_api
+    chart: ./charts/api
+    values:
+      - ./values/config_api.yaml
+    needs:
+      - qdb
+      - hydra
+  - name: influxdb
+    chart: influxdata/influxdb
+    version: 4.8.10
+    values:
+      - ./values/influxdb.yaml
+    needs:
+      - config_api
+  - name: mongodb
+    chart: bitnami/mongodb
+    version: 10.3.3
+    values:
+      - ./values/mongodb.yaml
+    needs:
+      - config_api
+  - name: rabbitmq
+    chart: bitnami/rabbitmq
+    version: 8.6.1
+    values:
+      - ./values/rabbitmq.yaml
+    needs:
+      - config_api
+  - name: redis
+    chart: bitnami/redis
+    version: 12.2.4
+    values:
+      - ./values/redis.yaml
+    needs:
+      - config_api
+  - name: neo4j
+    chart: ./charts/neo4j
+    version: 4.2.0-1
+    values:
+      - ./values/neo4j.yaml
+    needs:
+      - config_api
+  - name: auth_api
+    chart: ./charts/api
+    values:
+      - ./values/auth_api.yaml.gotmpl
+    needs:
+      - config_api
+  - name: data_api
+    chart: ./charts/api
+    values:
+      - ./values/data_api.yaml.gotmpl
+    needs:
+      - config_api
+  - name: management_api
+    chart: ./charts/api
+    values:
+      - ./values/management_api.yaml.gotmpl
+    needs:
+      - config_api
+  - name: faces_archive_api
+    chart: ./charts/api
+    values:
+      - ./values/faces_archive_api.yaml.gotmpl
+    needs:
+      - config_api
+  - name: ftp
+    chart: ./charts/ftp
+    values:
+      - ./values/ftp.yaml
+    needs:
+      - config_api
+  - name: h5serv
+    chart: ./charts/h5serv
+    values:
+      - ./values/h5serv.yaml
+    needs:
+      - config_api
+  - name: nginx
+    chart: ./charts/nginx
+    values:
+      - ./values/nginx.yaml
+    needs:
+      - config_api
+      - openldap

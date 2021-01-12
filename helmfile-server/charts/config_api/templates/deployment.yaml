@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.api.name }}
+  labels:
+    app: {{ .Values.api.name }}
+    group: {{ .Values.api.group }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.api.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.api.name }}
+        group: {{ .Values.api.group }}
+    volumes:
+      - name: myconfig-data
+        configMap:
+          name: config_api_files
+          items:
+          - key: myconfig.yaml
+            path: myconfig.yaml
+    spec:
+      containers:
+      - name: {{ .Values.api.name }}
+        image: "{{ .Values.image.repository }}/config_api:{{ .Values.image.tag }}"
+        resources:
+{{ toYaml .Values.api.resources | indent 10 }}
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.api.name }}
+        - secretRef:
+            name: common
+        volumeMounts:
+        - name: myconfig-data
+          mountPath: /myconfig
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred

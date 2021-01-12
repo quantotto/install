@@ -1,0 +1,6 @@
+persistence:
+  existingClaim: influxdb-data-pvc
+
+config:
+  reporting_disabled: true
+

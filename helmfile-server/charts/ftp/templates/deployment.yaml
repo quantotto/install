@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ftp
+    spec:
+      containers:
+      - name: ftp
+        image: "{{ .Values.image.repository }}/ftp:{{ .Values.image.tag }}"
+        ports:
+{{ range .Values.ports }}
+        - containerPort: {{ .targetPort }}
+{{ end }}
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        env:
+        - name: FTP_ROOT
+          value: "/ftp_root"
+        - name: MASQUERADE_ADDRESS
+          value: {{ .Values.masqueradeAddress }}
+        - name: FRAME_PORTAL
+          value: wss://nginx:15000/portal_ws
+        volumeMounts:
+        - name: ftp-root
+          mountPath: /ftp_root
+      volumes:
+      - name: ftp-root
+        persistentVolumeClaim:
+          claimName: ftp-root-pvc
+      restartPolicy: Always

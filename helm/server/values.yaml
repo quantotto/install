@@ -3,9 +3,7 @@ ssl:
   certsVolume: quantottoCertsVolume
 
 network:
-  dockerSubnet: ""
-  serverFQDN: ""
-  serverIP: ""
+  clusterDomain: "local"
   framesPort: 15000
 
 oauth2:
@@ -23,7 +21,42 @@ db:
   mongodbUser: "quantotto"
   mongodbPassword: ""
 
-ldap:
-  uri: "ldap://openldap:389"
-  adminPassword: ""
+openldap:
+  replicaCount: 1
+  adminPassword: "quantotto"
+  customLdifFiles:
+    qto_bootstrap.ldif: |-
+      dn: ou=users,dc=quantotto,dc=io
+      objectClass: organizationalUnit
 
+      dn: ou=groups,dc=quantotto,dc=io
+      objectClass: organizationalUnit
+
+      dn: cn=quantotto,ou=groups,dc=quantotto,dc=io
+      objectClass: groupOfUniqueNames
+      cn: quantotto
+      uniqueMember:
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+  env:
+    LDAP_ORGANISATION: "Quantotto Inc."
+    LDAP_DOMAIN: "quantotto.io"
+  service:
+    ldapPort: 389
+    type: NodePort
+
+qdb:
+  qdb:
+    user: "quantotto"
+    password: "quantotto"
+
+hydra:
+  hydra:
+    config:
+      dsn:
+      urls:
+        self:
+          issuer:
+        login:
+        consent:

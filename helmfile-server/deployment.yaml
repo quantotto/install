@@ -1,0 +1,97 @@
+portalFqdn: ""
+
+image:
+  repository: "quantotto"
+  tag: "2.12.0"
+
+qdb:
+  host: "qdb"
+  port: 5432
+  externalPort: 15432
+  user: "quantotto"
+  password: ""
+
+openldap:
+  adminPassword: ""
+
+config_api:
+  clientSecret: ""
+
+ftp:
+  masqueradeAddress: ""
+
+mongodb:
+  user: "quantotto"
+  password: ""
+
+neo4j:
+  password: "test"
+  volume:
+    storageClass: my-local-storage
+
+redis:
+  volume:
+    storageClass: my-local-storage
+
+rabbitmq:
+  volume:
+    storageClass: my-local-storage
+
+
+keys:
+  fernet: ""
+
+volumes:
+  - kind: PersistentVolumeClaim
+    name: training-data
+    pvc:
+      name: training-data-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "10Gi"
+  - kind: PersistentVolumeClaim
+    name: packages
+    pvc:
+      name: packages-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "1Gi"
+  - kind: PersistentVolumeClaim
+    name: qdb-data
+    pvc:
+      name: qdb-data-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "8Gi"
+  - kind: PersistentVolumeClaim
+    name: faces-archive-data
+    pvc:
+      name: faces-archive-data-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "2Gi"
+  - kind: PersistentVolumeClaim
+    name: ftp-root
+    pvc:
+      name: ftp-root-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "1Gi"
+  - kind: PersistentVolumeClaim
+    name: influxdb-data
+    pvc:
+      name: influxdb-data-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "8Gi"
+  - kind: PersistentVolumeClaim
+    name: mongodb-data
+    pvc:
+      name: mongodb-data-pvc
+      accessMode: ReadWriteOnce
+      className: my-local-storage
+      size: "10Gi"
+
+
+
+

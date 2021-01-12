@@ -1,0 +1,7 @@
+global:
+  storageClass: {{ .Values.rabbitmq.volume.storageClass }}
+
+persistence:
+  enabled: false
+
+extraEnvVarsCM: rabbitmq_env

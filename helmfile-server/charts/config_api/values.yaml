@@ -1,0 +1,11 @@
+api:
+  name: "config_api"
+  group: api
+  resources: {}
+  fernetKey: ""
+
+image:
+  repository: "quantotto"
+  tag: ""
+
+

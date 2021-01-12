@@ -1,0 +1,16 @@
+image:
+  repository: {{ .Values.image.repository }}
+  tag: {{ .Values.image.tag }}
+
+api:
+  name: auth_api
+  group: api
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+  fernetKey: {{ .Values.keys.fernet }}
+
+hydra:
+    configClientSecret: {{ .Values.config.clientSecret }}
+
