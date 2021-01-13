@@ -1,4 +1,5 @@
 {{ range .Values.volumes }}
+---
 apiVersion: v1
 kind: {{ .kind }}
 metadata:

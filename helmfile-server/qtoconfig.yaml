@@ -3,16 +3,24 @@ portalFqdn: "portal.quantotto.io"
 image:
   repository: "quantotto"
   tag: "2.12.0"
+  pullSecret:
+    repositoryUrl: "https://index.docker.io/v1/"
+    name: regcred
+    user: quantotto
+    password: ""
 
 qdb:
   host: "qdb"
-  port: 5432
-  externalPort: 15432
   user: "quantotto"
-  password: ""
+  password: "ymanlabs!"
+  service:
+    port: 5432
+    externalPort: 15432
 
 openldap:
-  adminPassword: ""
+  adminPassword: "ymanlabs!"
+  volume:
+    storageClass: my-local-storage
 
 configApi:
   clientSecret: "configApi.clientSecret"
@@ -22,7 +30,7 @@ ftp:
 
 mongodb:
   user: "quantotto"
-  password: ""
+  password: "ymanlabs!"
 
 neo4j:
   password: "test"

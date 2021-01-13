@@ -10,9 +10,7 @@ service:
   externalPort: 15432
   annotations: {}
 
-qdb:
-  user: quantotto
-  password: quantotto
+secretName: qdb
 
 securityContext:
   enabled: true
@@ -21,7 +19,7 @@ securityContext:
 
 volume:
   name: qdb-data
-  pvcName: qdb-persistent-volume-claim
+  pvcName: qdb-data-pvc
 
 
 resources: {}

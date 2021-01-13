@@ -1,24 +1,31 @@
-openldap:
-  replicaCount: 1
-  adminPassword: "{{ .Values.openldap.adminPassword }}"
-  customLdifFiles:
-    qto_bootstrap.ldif: |-
-      dn: ou=users,dc=quantotto,dc=io
-      objectClass: organizationalUnit
+replicaCount: 1
+adminPassword: "{{ .Values.openldap.adminPassword }}"
+customLdifFiles:
+  qto_bootstrap.ldif: |-
+    dn: ou=users,dc=quantotto,dc=io
+    objectClass: organizationalUnit
 
-      dn: ou=groups,dc=quantotto,dc=io
-      objectClass: organizationalUnit
+    dn: ou=groups,dc=quantotto,dc=io
+    objectClass: organizationalUnit
 
-      dn: cn=quantotto,ou=groups,dc=quantotto,dc=io
-      objectClass: groupOfUniqueNames
-      cn: quantotto
-      uniqueMember:
-  persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-  env:
-    LDAP_ORGANISATION: "Quantotto Inc."
-    LDAP_DOMAIN: "quantotto.io"
-  service:
-    ldapPort: 389
-    type: LoadBalancer
+    dn: cn=quantotto,ou=groups,dc=quantotto,dc=io
+    objectClass: groupOfUniqueNames
+    cn: quantotto
+    uniqueMember:
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  storageClass: {{ .Values.openldap.volume.storageClass }}
+env:
+  LDAP_ORGANISATION: "Quantotto Inc."
+  LDAP_DOMAIN: "quantotto.io"
+service:
+  ldapPort: 389
+  type: LoadBalancer
+ltb-passwd:
+  enabled: false
+phpldapadmin:
+  enabled: false
+replication:
+  enabled: false
+

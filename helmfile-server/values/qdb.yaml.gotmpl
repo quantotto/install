@@ -1,0 +1,14 @@
+image:
+  repository: {{ .Values.image.repository }}
+  tag: {{ .Values.image.tag | quote }}
+  pullPolicy: IfNotPresent
+  pullSecret: {{ .Values.image.pullSecret.name }}
+
+service:
+  port: {{ .Values.qdb.service.port }}
+  externalPort: {{ .Values.qdb.service.externalPort }}
+  annotations: {}
+
+volume:
+  name: qdb-data
+  pvcName: qdb-data-pvc

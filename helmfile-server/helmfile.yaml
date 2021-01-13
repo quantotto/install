@@ -1,7 +1,7 @@
 environments:
   default:
     values:
-    - deployment.yaml
+    - qtoconfig.yaml
 
 repositories:
   - name: stable
@@ -17,131 +17,149 @@ repositories:
 
 releases:
   - name: config
+    namespace: quantotto
     chart: ./charts/config
     values:
       - ./values/config.yaml.gotmpl
 
   - name: volumes
+    namespace: quantotto
     chart: ./charts/volumes
     values:
       - ./values/volumes.yaml.gotmpl
 
-  # - name: qdb
-  #   chart: ./charts/qdb
-  #   values:
-  #     - ./values/qdb.yaml.gotmpl
-  #   needs:
-  #     - config
-  #     - volumes
+  - name: qdb
+    namespace: quantotto
+    chart: ./charts/qdb
+    values:
+      - ./values/qdb.yaml.gotmpl
+    needs:
+      - quantotto/config
+      - quantotto/volumes
 
-  #  - name: openldap
-  #    chart: openldap/openldap
-  #    version: 2.0.4
-  #    values:
-  #      - ./values/openldap.yaml.gotmpl
+  - name: openldap
+    namespace: quantotto
+    chart: openldap/openldap
+    version: 2.0.4
+    values:
+      - ./values/openldap.yaml.gotmpl
 
-  # - name: hydra
-  #   chart: ory/hydra
-  #   version: 0.5.0
-  #   values:
-  #     - ./values/hydra.yaml.gotmpl
-  #   needs:
-  #     - qdb
+  - name: hydra
+    namespace: quantotto
+    chart: ory/hydra
+    version: 0.5.0
+    values:
+      - ./values/hydra.yaml.gotmpl
+    needs:
+      - quantotto/qdb
 
   # - name: config_api
+  #   namespace: quantotto
   #   chart: ./charts/api
   #   values:
   #     - ./values/config_api.yaml
   #   needs:
-  #     - qdb
-  #     - hydra
+  #     - quantotto/qdb
+  #     - quantotto/hydra
 
   # - name: influxdb
+  #   namespace: quantotto
   #   chart: influxdata/influxdb
   #   version: 4.8.10
   #   values:
   #     - ./values/influxdb.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: mongodb
+  #   namespace: quantotto
   #   chart: bitnami/mongodb
   #   version: 10.3.3
   #   values:
   #     - ./values/mongodb.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: rabbitmq
+  #   namespace: quantotto
   #   chart: bitnami/rabbitmq
   #   version: 8.6.1
   #   values:
   #     - ./values/rabbitmq.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: redis
+  #   namespace: quantotto
   #   chart: bitnami/redis
   #   version: 12.2.4
   #   values:
   #     - ./values/redis.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: neo4j
+  #   namespace: quantotto
   #   chart: ./charts/neo4j
   #   version: 4.2.0-1
   #   values:
   #     - ./values/neo4j.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: auth_api
+  #   namespace: quantotto
   #   chart: ./charts/api
   #   values:
   #     - ./values/auth_api.yaml.gotmpl
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: data_api
+  #   namespace: quantotto
   #   chart: ./charts/api
   #   values:
   #     - ./values/data_api.yaml.gotmpl
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: management_api
+  #   namespace: quantotto
   #   chart: ./charts/api
   #   values:
   #     - ./values/management_api.yaml.gotmpl
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: faces_archive_api
+  #   namespace: quantotto
   #   chart: ./charts/api
   #   values:
   #     - ./values/faces_archive_api.yaml.gotmpl
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: ftp
+  #   namespace: quantotto
   #   chart: ./charts/ftp
   #   values:
   #     - ./values/ftp.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: h5serv
+  #   namespace: quantotto
   #   chart: ./charts/h5serv
   #   values:
   #     - ./values/h5serv.yaml
   #   needs:
-  #     - config_api
+  #     - quantotto/config_api
 
   # - name: nginx
+  #   namespace: quantotto
   #   chart: ./charts/nginx
   #   values:
   #     - ./values/nginx.yaml
   #   needs:
-  #     - config_api
-  #     - openldap
+  #     - quantotto/config_api
+  #     - quantotto/openldap

@@ -1,3 +1,11 @@
+image:
+  pullSecret:
+    name: {{ .Values.image.pullSecret.name }}
+    repositoryUrl: {{ .Values.image.pullSecret.repositoryUrl }}
+    create: true
+    user: {{ .Values.image.pullSecret.user }}
+    password: {{ .Values.image.pullSecret.password }}
+
 keys:
   fernet: {{ .Values.keys.fernet }}
   privateKey: {{ .Values.keys.privateKey }}
@@ -42,3 +50,4 @@ facesArchiveApi:
   package: "quantotto.faces_archive_api"
   h5servEndpoint: http://h5serv:5000
   archiveDomain: faces_archive.data.quantotto.io
+

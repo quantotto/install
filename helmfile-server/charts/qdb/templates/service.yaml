@@ -10,7 +10,7 @@ spec:
     app: qdb
   ports:
   - name: qdb
-    port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.externalPort }}
+    port: {{ .Values.service.externalPort }}
+    targetPort: {{ .Values.service.port }}
 status:
   loadBalancer: {}

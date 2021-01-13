@@ -15,9 +15,9 @@ spec:
         app: qdb
     spec:
       volumes:
-        - name: qdb-data
+        - name: {{ .Values.volume.name }}
           persistentVolumeClaim:
-            claimName: qdb-data-pvc
+            claimName: {{ .Values.volume.pvcName }}
       containers:
       - name: qdb
         image: "{{ .Values.image.repository }}/db:{{ .Values.image.tag }}"
@@ -29,15 +29,15 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: qdb
+              name: {{ .Values.secretName }}
               key: user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: qdb
+              name: {{ .Values.secretName }}
               key: password
         volumeMounts:
-        - name: qdb-data
+        - name: {{ .Values.volume.name }}
           mountPath: /var/lib/postgresql/data
           readOnly: false
       restartPolicy: {{ default "Always" .Values.restartPolicy | quote }}
