@@ -31,6 +31,11 @@ spec:
       - name: nginx-certs
         secret:
           secretName: certs
+          items:
+          - key: tls.key
+            path: privkey.pem
+          - key: tls.crt
+            path: fullchain.pem
       restartPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

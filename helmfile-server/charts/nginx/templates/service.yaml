@@ -9,11 +9,11 @@ spec:
     app: nginx
   type: LoadBalancer
   ports:
+  - name: "nginxwss"
+    port: 15000
+    targetPort: 15000
   - name: "nginxqmc"
     port: 443
-    targetPort: 15000
-  - name: "nginxwss"
-    port: 15001
     targetPort: 15001
 status:
   loadBalancer: {}
