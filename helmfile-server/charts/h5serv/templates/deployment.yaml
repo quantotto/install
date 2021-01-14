@@ -15,10 +15,7 @@ spec:
       containers:
       - name: h5serv
         image: "{{ .Values.image.repository }}/h5serv:{{ .Values.image.tag }}"
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "100m"
+        resources: {}
         ports:
         - containerPort: 5000
         env:
