@@ -1,8 +1,15 @@
 hydra:
   config:
-    dsn: "postgres://{{ .Values.qdb.user }}:{{ .Values.qdb.password }}@{{ .Values.qdb.host }}:{{ .Values.qdb.service.port }}/hydra?ssl_enable=false"
     urls:
       self:
         issuer: "https://{{ .Values.portalFqdn }}/hydra-public/"
       login: "https://{{ .Values.portalFqdn }}/#/login"
       consent: "https://{{ .Values.portalFqdn }}/#/consent"
+  autoMigrate: true
+  existingSecret: hydra-secret
+
+service:
+  admin:
+    enabled: false
+  public:
+    enabled: false

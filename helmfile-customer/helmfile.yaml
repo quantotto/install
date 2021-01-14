@@ -1,5 +1,35 @@
-repositories:
-  - name: stable
-    url: https://charts.helm.sh/stable
+environments:
+  default:
+    values:
+    - qtoconfig.yaml
 
 releases:
+  - name: portal
+    namespace: quantotto
+    chart: ./charts/portal
+    values:
+      - ./values/portal.yaml.gotmpl
+
+  - name: real-time-data
+    namespace: quantotto
+    chart: ./charts/real_time_data
+    values:
+      - ./values/real_time_data.yaml.gotmpl
+
+  - name: triggers-runner
+    namespace: quantotto
+    chart: ./charts/triggers_runner
+    values:
+      - ./values/triggers_runner.yaml.gotmpl
+
+  - name: training-scheduler
+    namespace: quantotto
+    chart: ./charts/training_scheduler
+    values:
+      - ./values/training_scheduler.yaml.gotmpl
+
+  - name: faces-recognizer
+    namespace: quantotto
+    chart: ./charts/faces_recognizer
+    values:
+      - ./values/faces_recognizer.yaml.gotmpl

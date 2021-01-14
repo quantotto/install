@@ -16,6 +16,7 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   storageClass: {{ .Values.openldap.volume.storageClass }}
+  size: {{ .Values.openldap.volume.size }}
 env:
   LDAP_ORGANISATION: "Quantotto Inc."
   LDAP_DOMAIN: "quantotto.io"

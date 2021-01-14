@@ -1,20 +1,14 @@
 image:
   repository: {{ .Values.image.repository }}
   tag: {{ .Values.image.tag }}
+  pullPolicy: IfNotPresent
+  pullSecret: {{ .Values.image.pullSecret.name }}
 
 api:
   name: data_api
   group: api
-  resources:
-    limits:
-      memory: "128Mi"
-      cpu: "100m"
-  fernetKey: {{ .Values.keys.fernet }}
+  resources: {}
 
-hydra:
-    internalPublicApiURL: "http://nginx:15001/hydra-public"
-    configClientID: config_api_backendapp
-    configClientSecret: {{ .Values.config.clientSecret }}
 
 volumeMounts:
   - name: private-key
@@ -23,7 +17,7 @@ volumeMounts:
 volumes:
   - name: private-key
     secret:
-      secretName: privateKey
+      secretName: private-key
       items:
       - key: private.key
         path: private_key.pem

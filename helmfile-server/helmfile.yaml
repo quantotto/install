@@ -51,115 +51,116 @@ releases:
     values:
       - ./values/hydra.yaml.gotmpl
     needs:
+      - quantotto/config
       - quantotto/qdb
 
-  # - name: config_api
-  #   namespace: quantotto
-  #   chart: ./charts/api
-  #   values:
-  #     - ./values/config_api.yaml
-  #   needs:
-  #     - quantotto/qdb
-  #     - quantotto/hydra
+  - name: config-api
+    namespace: quantotto
+    chart: ./charts/config_api
+    values:
+      - ./values/config_api.yaml.gotmpl
+    needs:
+      - quantotto/qdb
+      - quantotto/hydra
 
-  # - name: influxdb
-  #   namespace: quantotto
-  #   chart: influxdata/influxdb
-  #   version: 4.8.10
-  #   values:
-  #     - ./values/influxdb.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: influxdb
+    namespace: quantotto
+    chart: influxdata/influxdb
+    version: 4.8.10
+    values:
+      - ./values/influxdb.yaml
+    needs:
+      - quantotto/config-api
 
-  # - name: mongodb
-  #   namespace: quantotto
-  #   chart: bitnami/mongodb
-  #   version: 10.3.3
-  #   values:
-  #     - ./values/mongodb.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: mongodb
+    namespace: quantotto
+    chart: bitnami/mongodb
+    version: 10.3.3
+    values:
+      - ./values/mongodb.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: rabbitmq
-  #   namespace: quantotto
-  #   chart: bitnami/rabbitmq
-  #   version: 8.6.1
-  #   values:
-  #     - ./values/rabbitmq.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: rabbitmq
+    namespace: quantotto
+    chart: bitnami/rabbitmq
+    version: 8.6.1
+    values:
+      - ./values/rabbitmq.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: redis
-  #   namespace: quantotto
-  #   chart: bitnami/redis
-  #   version: 12.2.4
-  #   values:
-  #     - ./values/redis.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: redis
+    namespace: quantotto
+    chart: bitnami/redis
+    version: 12.2.4
+    values:
+      - ./values/redis.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: neo4j
-  #   namespace: quantotto
-  #   chart: ./charts/neo4j
-  #   version: 4.2.0-1
-  #   values:
-  #     - ./values/neo4j.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: neo4j
+    namespace: quantotto
+    chart: ./charts/neo4j
+    values:
+      - ./values/neo4j.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: auth_api
-  #   namespace: quantotto
-  #   chart: ./charts/api
-  #   values:
-  #     - ./values/auth_api.yaml.gotmpl
-  #   needs:
-  #     - quantotto/config_api
+  - name: auth-api
+    namespace: quantotto
+    chart: ./charts/app_api
+    values:
+      - ./values/auth_api.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: data_api
-  #   namespace: quantotto
-  #   chart: ./charts/api
-  #   values:
-  #     - ./values/data_api.yaml.gotmpl
-  #   needs:
-  #     - quantotto/config_api
+  - name: data-api
+    namespace: quantotto
+    chart: ./charts/app_api
+    values:
+      - ./values/data_api.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: management_api
-  #   namespace: quantotto
-  #   chart: ./charts/api
-  #   values:
-  #     - ./values/management_api.yaml.gotmpl
-  #   needs:
-  #     - quantotto/config_api
+  - name: management-api
+    namespace: quantotto
+    chart: ./charts/app_api
+    values:
+      - ./values/management_api.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: faces_archive_api
-  #   namespace: quantotto
-  #   chart: ./charts/api
-  #   values:
-  #     - ./values/faces_archive_api.yaml.gotmpl
-  #   needs:
-  #     - quantotto/config_api
+  - name: faces-archive-api
+    namespace: quantotto
+    chart: ./charts/app_api
+    values:
+      - ./values/faces_archive_api.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: ftp
-  #   namespace: quantotto
-  #   chart: ./charts/ftp
-  #   values:
-  #     - ./values/ftp.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: ftp
+    namespace: quantotto
+    chart: ./charts/ftp
+    values:
+      - ./values/ftp.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: h5serv
-  #   namespace: quantotto
-  #   chart: ./charts/h5serv
-  #   values:
-  #     - ./values/h5serv.yaml
-  #   needs:
-  #     - quantotto/config_api
+  - name: h5serv
+    namespace: quantotto
+    chart: ./charts/h5serv
+    values:
+      - ./values/h5serv.yaml.gotmpl
+    needs:
+      - quantotto/config-api
 
-  # - name: nginx
-  #   namespace: quantotto
-  #   chart: ./charts/nginx
-  #   values:
-  #     - ./values/nginx.yaml
-  #   needs:
-  #     - quantotto/config_api
-  #     - quantotto/openldap
+  - name: nginx
+    namespace: quantotto
+    chart: ./charts/nginx
+    values:
+      - ./values/nginx.yaml.gotmpl
+    needs:
+      - quantotto/config-api
+      - quantotto/openldap
+      - quantotto/hydra

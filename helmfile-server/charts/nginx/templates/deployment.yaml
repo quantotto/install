@@ -15,7 +15,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: quantotto/nginx:${QUANTOTTO_VERSION_TAG}
+      - image: "{{ .Values.image.repository }}/nginx:{{ .Values.image.tag }}"
         name: nginx
         ports:
         - containerPort: 15000
@@ -32,3 +32,5 @@ spec:
         secret:
           secretName: certs
       restartPolicy: Always
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret | quote }}

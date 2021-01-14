@@ -1,1 +1,7 @@
+image:
+  repository: {{ .Values.image.repository }}
+  tag: {{ .Values.image.tag }}
+  pullPolicy: IfNotPresent
+  pullSecret: {{ .Values.image.pullSecret.name }}
+
 masqueradeAddress: {{ .Values.ftp.masqueradeAddress }}

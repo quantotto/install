@@ -1,17 +1,10 @@
 image:
   repository: {{ .Values.image.repository }}
-  tag: {{ .Values.image.tag }}
+  tag: {{ .Values.image.tag | quote }}
+  pullPolicy: IfNotPresent
+  pullSecret: {{ .Values.image.pullSecret.name }}
 
 api:
   name: config_api
   group: api
-  resources:
-    limits:
-      memory: "128Mi"
-      cpu: "100m"
-  fernetKey: {{ .Values.keys.fernet }}
-
-hydra:
-    internalPublicApiURL: "http://nginx:15001/hydra-public"
-    configClientID: config_api_backendapp
-    configClientSecret: {{ .Values.config.clientSecret }}
+  resources: {}

@@ -5,7 +5,9 @@ api:
   fernetKey: ""
 
 image:
-  repository: "quantotto"
+  repository: quantotto
   tag: ""
+  pullPolicy: IfNotPresent
+  pullSecret: regcred
 
 

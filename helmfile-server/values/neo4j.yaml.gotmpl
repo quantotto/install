@@ -1,6 +1,9 @@
+imageTag: 4.2.2
+
 neo4jPassword: {{ .Values.neo4j.password }}
 
 core:
   standalone: true
   persistentVolume:
     storageClass: {{ .Values.neo4j.volume.storageClass }}
+    size: {{ .Values.neo4j.volume.size }}

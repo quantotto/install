@@ -1,4 +1,9 @@
-global:
-  storageClass: {{ .Values.redis.volume.storageClass }}
+master:
+  persistence:
+    storageClass: {{ .Values.redis.volume.storageClass }}
+    size: {{ .Values.redis.volume.size }}
 
 usePassword: false
+
+cluster:
+  enabled: false

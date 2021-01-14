@@ -1,8 +1,10 @@
 auth:
   username: {{ .Values.mongodb.user }}
   password: {{ .Values.mongodb.password }}
+  database: {{ .Values.mongodb.database }}
 
 persistence:
   existingClaim: mongodb-data-pvc
 
-command: --wiredTigerCacheSizeGB=1
+extraFlags:
+  - "--wiredTigerCacheSizeGB=1"

@@ -1,0 +1,7 @@
+portalFqdn: "portal.quantotto.io"
+
+image:
+  repository: "quantotto"
+  tag: "2.12.0"
+  pullSecret:
+    name: regcred

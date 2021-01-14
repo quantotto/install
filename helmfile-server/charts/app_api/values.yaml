@@ -5,8 +5,10 @@ api:
   fernetKey: ""
 
 image:
-  repository: ""
+  repository: quantotto
   tag: ""
+  pullPolicy: IfNotPresent
+  pullSecret: regcred
 
 volumes: []
 

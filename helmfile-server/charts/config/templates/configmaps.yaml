@@ -12,13 +12,6 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-api-files
-data:
-  myconfig.yaml: |-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: api-common
 data:
   HYDRA_API_URL: {{ .Values.hydra.apiUrl }}

@@ -17,12 +17,16 @@ cert:
   privateKey: {{ .Values.cert.privateKey }}
 
 qdb:
-  user: "{{ .Values.qdb.user }}"
-  password: "{{ .Values.qdb.password }}"
+  host: {{ .Values.qdb.host }}
+  port: {{ .Values.qdb.service.externalPort }}
+  user: {{ .Values.qdb.user }}
+  password: {{ .Values.qdb.password | quote }}
 
 hydra:
-  apiUrl: http://hydra_api:4444
-  internalPublicUrl: http://hydra_api:4445
+  apiUrl: http://hydra-admin:4445
+  internalPublicUrl: http://hydra-public:4444
+  systemSecret: {{ .Values.hydra.systemSecret }}
+  systemCookie: {{ .Values.hydra.systemCookie }}
 
 configApi:
   package: "quantotto.config_api"
@@ -38,7 +42,7 @@ managementApi:
   package: "quantotto.mgmt_api"
   redisUrl: "redis://redis:6379"
   baseDataPath: /training
-  licensePublicKeyPath: ./license_public_key.pem
+  licensePublicKeyPath: /opt/quantotto/keys/license_public_key.pem
   packagesFolder: /packages
 
 dataApi:

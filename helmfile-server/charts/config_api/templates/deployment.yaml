@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.api.name }}
+  name: {{ .Values.api.name | replace "_" "-" }}
   labels:
-    app: {{ .Values.api.name }}
+    app: {{ .Values.api.name | replace "_" "-" }}
     group: {{ .Values.api.group }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.api.name }}
+      app: {{ .Values.api.name | replace "_" "-" }}
   template:
     metadata:
       labels:
-        app: {{ .Values.api.name }}
+        app: {{ .Values.api.name | replace "_" "-" }}
         group: {{ .Values.api.group }}
-    volumes:
+    spec:
+      volumes:
       - name: myconfig-data
-        configMap:
-          name: config_api_files
+        secret:
+          secretName: config-api-files
           items:
           - key: myconfig.yaml
             path: myconfig.yaml
-    spec:
       containers:
-      - name: {{ .Values.api.name }}
+      - name: {{ .Values.api.name | replace "_" "-" }}
         image: "{{ .Values.image.repository }}/config_api:{{ .Values.image.tag }}"
         resources:
 {{ toYaml .Values.api.resources | indent 10 }}
@@ -32,7 +32,7 @@ spec:
         - containerPort: 5000
         envFrom:
         - configMapRef:
-            name: {{ .Values.api.name }}
+            name: {{ .Values.api.name | replace "_" "-" }}
         - secretRef:
             name: common
         volumeMounts:
@@ -40,4 +40,4 @@ spec:
           mountPath: /myconfig
       restartPolicy: Always
       imagePullSecrets:
-      - name: regcred
+      - name: {{ .Values.image.pullSecret | quote }}

@@ -7,7 +7,7 @@ image:
     repositoryUrl: "https://index.docker.io/v1/"
     name: regcred
     user: quantotto
-    password: ""
+    password: "Qu@n+o++0_15!"
 
 qdb:
   host: "qdb"
@@ -15,12 +15,17 @@ qdb:
   password: "ymanlabs!"
   service:
     port: 5432
-    externalPort: 15432
+    externalPort: 5432
+
+hydra:
+  systemSecret: "RU15a0cxMWthOWQwb0p1QmY4T0huaDlJ"
+  systemCookie: "SHVZTUhvU0hjVkZoQmJSOTdsUDE5dFZp"
 
 openldap:
   adminPassword: "ymanlabs!"
   volume:
     storageClass: my-local-storage
+    size: "4Gi"
 
 configApi:
   clientSecret: "configApi.clientSecret"
@@ -31,23 +36,25 @@ ftp:
 mongodb:
   user: "quantotto"
   password: "ymanlabs!"
+  database: "frames"
 
 neo4j:
   password: "test"
   volume:
     storageClass: my-local-storage
+    size: "4Gi"
 
 redis:
   volume:
     storageClass: my-local-storage
+    size: "4Gi"
 
 rabbitmq:
   volume:
     storageClass: my-local-storage
 
-
 keys:
-  fernet: "fernetkey"
+  fernet: "fBa77hDchsGbnKL2tw7-o6asYt268MdH0SZsfOdBZ8Q="
   privateKey: "myPrivateKey"
   privateKeyPassword: "privateKeyPassword$"
 
@@ -62,49 +69,50 @@ volumes:
       name: training-data-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "10Gi"
+      size: "64Gi"
   - kind: PersistentVolumeClaim
     name: packages
     pvc:
       name: packages-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "1Gi"
+      size: "4Gi"
   - kind: PersistentVolumeClaim
     name: qdb-data
     pvc:
       name: qdb-data-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "8Gi"
+      size: "16Gi"
   - kind: PersistentVolumeClaim
     name: faces-archive-data
     pvc:
       name: faces-archive-data-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "2Gi"
+      size: "16Gi"
   - kind: PersistentVolumeClaim
     name: ftp-root
     pvc:
       name: ftp-root-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "1Gi"
+      size: "4Gi"
   - kind: PersistentVolumeClaim
     name: influxdb-data
     pvc:
       name: influxdb-data-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "8Gi"
+      size: "32Gi"
   - kind: PersistentVolumeClaim
     name: mongodb-data
     pvc:
       name: mongodb-data-pvc
       accessMode: ReadWriteOnce
       className: my-local-storage
-      size: "10Gi"
+      size: "256Gi"
+
 
 
 

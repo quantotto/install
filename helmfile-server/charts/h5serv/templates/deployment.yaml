@@ -34,4 +34,4 @@ spec:
       restartPolicy: Always
       nodeSelector: {}
       imagePullSecrets:
-      - name: regcred
+      - name: {{ .Values.image.pullSecret | quote }}
