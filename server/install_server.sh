@@ -52,7 +52,7 @@ pip install -U pip
 echo -n "Activated virtual environment"
 
 echo "Installing Quantotto Server CLI package"
-pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server
+pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server==2.12.150
 
 echo "Cloning rpi image builder repo"
 git clone https://github.com/RPi-Distro/pi-gen ${APP_FOLDER}/pi-gen
