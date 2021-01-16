@@ -23,6 +23,12 @@ spec:
           items:
           - key: myconfig.yaml
             path: myconfig.yaml
+      - name: full-myconfig-data
+        secret:
+          secretName: config-api-files
+          items:
+          - key: fullmyconfig.yaml
+            path: fullmyconfig.yaml
       containers:
       - name: {{ .Values.api.name | replace "_" "-" }}
         image: "{{ .Values.image.repository }}/config_api:{{ .Values.image.tag }}"

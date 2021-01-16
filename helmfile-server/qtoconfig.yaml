@@ -1,4 +1,4 @@
-portalFqdn: "portal.quantotto.io"
+portalFqdn: "portal.quantotto.local"
 
 image:
   repository: "quantotto"
@@ -8,6 +8,8 @@ image:
     name: regcred
     user: quantotto
     password: "Qu@n+o++0_15!"
+
+retentionDays: 3
 
 qdb:
   host: "qdb"
@@ -23,20 +25,21 @@ hydra:
 
 openldap:
   adminPassword: "ymanlabs!"
+  uri: "ldap://openldap:389"
   volume:
     storageClass: my-local-storage
     size: "4Gi"
-
-configApi:
-  clientSecret: "configApi.clientSecret"
 
 ftp:
   masqueradeAddress: ""
 
 mongodb:
+  host: "mongodb"
   user: "quantotto"
   password: "ymanlabs!"
   database: "frames"
+  service:
+    port: 27017
 
 neo4j:
   password: "test"

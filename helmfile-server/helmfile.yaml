@@ -21,12 +21,14 @@ releases:
     chart: ./charts/config
     values:
       - ./values/config.yaml.gotmpl
+    wait: true
 
   - name: volumes
     namespace: quantotto
     chart: ./charts/volumes
     values:
       - ./values/volumes.yaml.gotmpl
+    wait: true
 
   - name: qdb
     namespace: quantotto
@@ -36,6 +38,7 @@ releases:
     needs:
       - quantotto/config
       - quantotto/volumes
+    wait: true
 
   - name: openldap
     namespace: quantotto
@@ -43,6 +46,7 @@ releases:
     version: 2.0.4
     values:
       - ./values/openldap.yaml.gotmpl
+    wait: true
 
   - name: hydra
     namespace: quantotto
@@ -53,6 +57,7 @@ releases:
     needs:
       - quantotto/config
       - quantotto/qdb
+    wait: true
 
   - name: config-api
     namespace: quantotto
@@ -62,6 +67,7 @@ releases:
     needs:
       - quantotto/qdb
       - quantotto/hydra
+    wait: true
 
   - name: influxdb
     namespace: quantotto

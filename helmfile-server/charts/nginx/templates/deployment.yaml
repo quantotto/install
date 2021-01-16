@@ -15,7 +15,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: "{{ .Values.image.repository }}/nginx:{{ .Values.image.tag }}"
+      - image: "{{ .Values.image.repository }}/nginxk8s:{{ .Values.image.tag }}"
         name: nginx
         ports:
         - containerPort: 15000
