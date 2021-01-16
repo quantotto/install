@@ -19,10 +19,6 @@ qdb:
     port: 5432
     externalPort: 5432
 
-hydra:
-  systemSecret: "RU15a0cxMWthOWQwb0p1QmY4T0huaDlJ"
-  systemCookie: "SHVZTUhvU0hjVkZoQmJSOTdsUDE5dFZp"
-
 openldap:
   adminPassword: "ymanlabs!"
   uri: "ldap://openldap:389"
