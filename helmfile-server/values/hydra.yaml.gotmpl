@@ -3,8 +3,8 @@ hydra:
     urls:
       self:
         issuer: "https://{{ .Values.portalFqdn }}/hydra-public/"
-      login: "https://{{ .Values.portalFqdn }}/#/login"
-      consent: "https://{{ .Values.portalFqdn }}/#/consent"
+      login: "https://{{ .Values.portalFqdn }}/#/login-page"
+      consent: "https://{{ .Values.portalFqdn }}/#/consent-page"
   autoMigrate: true
   existingSecret: hydra-secret
 
