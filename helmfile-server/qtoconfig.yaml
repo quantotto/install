@@ -1,4 +1,7 @@
 portalFqdn: "portal.quantotto.local"
+clusterDomain: "cluster.local"
+serverNamespace: quantotto
+customerNamespacePrefix: "quantotto-"
 
 image:
   repository: "quantotto"
