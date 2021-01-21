@@ -1,5 +1,5 @@
 apiVersion: v2
-name: api
+name: configapi
 description: Quantotto Helm chart for Config API
 type: application
 version: 0.1.0

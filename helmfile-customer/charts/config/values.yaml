@@ -1,0 +1,7 @@
+image:
+  pullSecret:
+    repositoryUrl:
+    name: regcred
+    create: true
+    user:
+    password:

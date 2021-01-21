@@ -18,4 +18,11 @@ customer:
     lname: ""
     login: ""
     email: ""
+    password: ""
+
+keys:
+  fernet: ""
+  privateKey: ""
+  publicKey: ""
+  privateKeyPassword: ""
 

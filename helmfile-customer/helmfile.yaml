@@ -4,32 +4,48 @@ environments:
     - qtoconfig.yaml
 
 releases:
+  - name: customerconfig
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/config
+    values:
+      - ./values/config.yaml.gotmpl
+
   - name: portal
-    namespace: quantotto
-    chart: ./charts/portal
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/app
     values:
       - ./values/portal.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/customerconfig"
 
   - name: real-time-data
-    namespace: quantotto
-    chart: ./charts/real_time_data
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/app
     values:
       - ./values/real_time_data.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
 
   - name: triggers-runner
-    namespace: quantotto
-    chart: ./charts/triggers_runner
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/app
     values:
       - ./values/triggers_runner.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
 
   - name: training-scheduler
-    namespace: quantotto
-    chart: ./charts/training_scheduler
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/app
     values:
       - ./values/training_scheduler.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
 
   - name: faces-recognizer
-    namespace: quantotto
-    chart: ./charts/faces_recognizer
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./charts/app
     values:
       - ./values/faces_recognizer.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"

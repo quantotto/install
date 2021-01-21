@@ -3,3 +3,31 @@ image:
   tag: {{ .Values.image.tag }}
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
+
+app:
+  name: portal
+
+service:
+  enabled: true
+
+volumeMounts:
+  - name: training-data
+    mountPath: /training
+  - name: packages
+    mountPath: /packages
+  - name: public-key-pem
+    mountPath: /opt/quantotto/keys
+
+volumes:
+  - name: training-data
+    persistentVolumeClaim:
+      claimName: training-data-pvc
+  - name: packages
+    persistentVolumeClaim:
+      claimName: packages-pvc
+  - name: public-key-pem
+    configMap:
+      name: portal-files
+      items:
+      - key: license_public_key.pem
+        path: license_public_key.pem

@@ -3,3 +3,15 @@ image:
   tag: {{ .Values.image.tag }}
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
+
+app:
+  name: triggers_runner
+
+volumeMounts:
+  - name: packages
+    mountPath: /packages
+
+volumes:
+  - name: packages
+    persistentVolumeClaim:
+      claimName: packages-pvc

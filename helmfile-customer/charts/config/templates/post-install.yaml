@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: keys
+          secret:
+            secretName: private-key
+            items:
+            - key: public.key
+              path: public_key.pem
+            - key: private.key
+              path: private_key.pem
+      containers:
+      - name: configure-customer
+        image: "{{ .Values.image.repository }}/app_base:{{ .Values.image.tag }}"
+        envFrom:
+        - configMapRef:
+            name: api-common
+        - configMapref:
+            name: {{ .Values.customer.id }}-config
+        - secretRef:
+            name: common
+        - secretRef:
+            name: config-super-admin
+        - secretRef:
+            name: {{ .Values.customer.id }}-secret
+        command:
+        - python
+        - "scripts/k8s_customer.py"
+        volumeMounts:
+        - name: keys
+          mountPath: /opt/quantotto/keys

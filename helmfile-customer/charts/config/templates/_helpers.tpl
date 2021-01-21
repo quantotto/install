@@ -67,23 +67,3 @@ Create secret to access docker registry
 {{- define "imagePullSecret" }}
 {{- printf "{\"auths\": {\"%s\": {\"auth\": \"%s\"}}}" .Values.image.pullSecret.repositoryUrl (printf "%s:%s" .Values.image.pullSecret.user .Values.image.pullSecret.password | b64enc) | b64enc }}
 {{- end }}
-
-{{/*
-Credits: https://medium.com/nuvo-group-tech/move-your-certs-to-helm-4f5f61338aca
-Generate certificates
-*/}}
-{{- define "gen-certs" -}}
-{{- $altNames := list .Values.portalFqdn "127.0.0.1" -}}
-{{- $ca := genCA ( printf "%s-ca" .Release.Namespace ) 3650 -}}
-{{- $cert := genSignedCert .Values.portalFqdn nil $altNames 3650 $ca -}}
-tls.crt: {{ $cert.Cert | b64enc }}
-tls.key: {{ $cert.Key | b64enc }}
-{{- end -}}
-
-{{/*
-Generate key pair
-*/}}
-{{- define "gen-private-key" -}}
-{{- $key := genPrivateKey "rsa" -}}
-private.key: {{ $key | b64enc | quote }}
-{{- end -}}

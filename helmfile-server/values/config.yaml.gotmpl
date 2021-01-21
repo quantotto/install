@@ -13,11 +13,9 @@ image:
 keys:
   fernet: {{ .Values.keys.fernet }}
   privateKey: {{ .Values.keys.privateKey }}
+  publicKey: {{ .Values.keys.publicKey }}
   privateKeyPassword: {{ .Values.keys.privateKeyPassword }}
 
-cert:
-  fullChain: {{ .Values.cert.fullChain }}
-  privateKey: {{ .Values.cert.privateKey }}
 
 openldap:
   uri: {{ .Values.openldap.uri }}

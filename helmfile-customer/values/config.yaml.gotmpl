@@ -1,0 +1,62 @@
+portalFqdn: {{ .Values.portalFqdn }}
+clusterDomain: {{ .Values.clusterDomain }}
+
+image:
+  repository: {{ .Values.image.repository }}
+  tag: {{ .Values.image.tag }}
+  pullPolicy: IfNotPresent
+  pullSecret: {{ .Values.image.pullSecret.name }}
+
+
+customer:
+  id: {{ .Values.customer.id }}
+  name: {{ .Values.customer.name | quote }}
+  admin:
+    fname: {{ .Values.customer.admin.fname | quote }}
+    mname: {{ .Values.customer.admin.mname | quote }}
+    lname: {{ .Values.customer.admin.lname | quote }}
+    login: {{ .Values.customer.admin.login | quote }}
+    email: {{ .Values.customer.admin.email | quote }}
+    password: {{ .Values.customer.admin.password | quote }}
+
+keys:
+  fernet: {{ .Values.keys.fernet }}
+  privateKey: {{ .Values.keys.privateKey }}
+  publicKey: {{ .Values.keys.publicKey }}
+  privateKeyPassword: {{ .Values.keys.privateKeyPassword }}
+
+modelsFolder: /training/models
+scenarioGroups: ""
+
+configApi:
+  url: "http://config-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
+
+managementApi:
+  url: "http://mgmt-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
+
+dataApi:
+  url: "http://data-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
+
+h5serv:
+  url: "http://h5serv.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000"
+
+portal:
+  licensePublicKeyPath: /opt/quantotto/keys/license_public_key.pem
+  asys:
+    listenOn: "portal:15100"
+    master: "portal:15100"
+    portsRange: "15101-15299"
+
+triggersRunner:
+  asys:
+    listenOn: "triggers-runner:15100"
+    master: "triggers-runner:15100"
+    portsRange: "15101-15299"
+
+facesRecognizer:
+  asys:
+    listenOn: "faces-recognizer:15100"
+    master: "faces-recognizer:15100"
+    portsRange: "15101-15299"
+  knownFaceGroup: ""
+  faceClassifierName: "trackfaces"

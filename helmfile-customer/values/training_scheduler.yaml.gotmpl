@@ -3,3 +3,16 @@ image:
   tag: {{ .Values.image.tag }}
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
+
+app:
+  name: training_scheduler
+
+volumeMounts:
+  - name: training-data
+    mountPath: /training
+
+volumes:
+  - name: training-data
+    persistentVolumeClaim:
+      claimName: training-data-pvc
+

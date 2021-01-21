@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name | replace "_" "-" }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name | replace "_" "-" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name | replace "_" "-" }}
+    spec:
+      volumes:
+{{ toYaml .Values.volumes | indent 8 }}
+      containers:
+      - name: {{ .Values.app.name | replace "_" "-" }}
+        image: "{{ .Values.image.repository }}/{{ .Values.app.name }}:{{ .Values.image.tag }}"
+        resources: { }
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: customer-config
+        - configMapRef:
+            name: app-common
+        - configMapRef:
+            name: {{ .Values.app.name | replace "_" "-" }}
+        - secretRef:
+            name: customer-secret
+        - secretRef:
+            name: common
+        volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 10 }}
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+

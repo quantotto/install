@@ -3,3 +3,10 @@ image:
   tag: {{ .Values.image.tag }}
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
+
+app:
+  name: real_time_data
+
+service:
+  enabled: true
+

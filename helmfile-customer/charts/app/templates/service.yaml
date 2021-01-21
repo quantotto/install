@@ -1,0 +1,17 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name | replace "_" "-" }}
+  labels:
+    app: {{ .Values.app.name | replace "_" "-" }}
+spec:
+  selector:
+    app: {{ .Values.app.name | replace "_" "-" }}
+  ports:
+  - name: {{ .Values.app.name | replace "_" "-" }}
+    port: 5000
+    targetPort: 5000
+status:
+  loadBalancer: {}
+{{- end }}

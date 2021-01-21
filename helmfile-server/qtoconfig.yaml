@@ -57,12 +57,9 @@ rabbitmq:
 
 keys:
   fernet: "fBa77hDchsGbnKL2tw7-o6asYt268MdH0SZsfOdBZ8Q="
-  privateKey: "myPrivateKey"
-  privateKeyPassword: "privateKeyPassword$"
-
-cert:
-  fullChain: "fullchain cert"
-  privateKey: "abrakadabra"
+  privateKey: ""
+  publicKey: ""
+  privateKeyPassword: ""
 
 volumes:
   - kind: PersistentVolumeClaim
