@@ -1,7 +1,10 @@
 environments:
   default:
     values:
-    - qtoconfig.yaml
+    - environment/server_values.yaml
+    secrets:
+    - environment/server_secrets.yaml
+
 
 repositories:
   - name: stable

@@ -44,7 +44,7 @@ kind: ConfigMap
 metadata:
   name: portal-files
 data:
-  license_public_key.pem: {{ .Values.keys.publicKey }}
+  license_public_key.pem: {{ .Values.encryptionKeys.publicKey }}
 ---
 apiVersion: v1
 kind: ConfigMap

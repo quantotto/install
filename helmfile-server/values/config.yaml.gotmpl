@@ -10,11 +10,11 @@ image:
     user: {{ .Values.image.pullSecret.user }}
     password: {{ .Values.image.pullSecret.password }}
 
-keys:
-  fernet: {{ .Values.keys.fernet }}
-  privateKey: {{ .Values.keys.privateKey }}
-  publicKey: {{ .Values.keys.publicKey }}
-  privateKeyPassword: {{ .Values.keys.privateKeyPassword }}
+encryptionKeys:
+  fernet: {{ .Values.encryptionKeys.fernet }}
+  privateKey: {{ .Values.encryptionKeys.privateKey }}
+  publicKey: {{ .Values.encryptionKeys.publicKey }}
+  privateKeyPassword: {{ .Values.encryptionKeys.privateKeyPassword }}
 
 
 openldap:

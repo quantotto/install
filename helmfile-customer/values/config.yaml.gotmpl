@@ -20,10 +20,10 @@ customer:
     password: {{ .Values.customer.admin.password | quote }}
 
 keys:
-  fernet: {{ .Values.keys.fernet }}
-  privateKey: {{ .Values.keys.privateKey }}
-  publicKey: {{ .Values.keys.publicKey }}
-  privateKeyPassword: {{ .Values.keys.privateKeyPassword }}
+  fernet: {{ .Values.encryptionKeys.fernet }}
+  privateKey: {{ .Values.encryptionKeys.privateKey }}
+  publicKey: {{ .Values.encryptionKeys.publicKey }}
+  privateKeyPassword: {{ .Values.encryptionKeys.privateKeyPassword }}
 
 modelsFolder: /training/models
 scenarioGroups: ""
