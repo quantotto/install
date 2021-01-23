@@ -1,0 +1,172 @@
+environments:
+  default:
+    values:
+    - base/base_env.yaml
+    - server/server_env.yaml
+    secrets:
+    - base/base_secrets.yaml
+    - server/server_secrets.yaml
+
+repositories:
+  - name: stable
+    url: https://charts.helm.sh/stable
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: ory
+    url: https://k8s.ory.sh/helm/charts
+  - name: influxdata
+    url: https://helm.influxdata.com/
+  - name: openldap
+    url: https://jp-gouin.github.io/helm-openldap/
+
+releases:
+  - name: config
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/config
+    values:
+      - ./server/values/config.yaml.gotmpl
+
+  - name: volumes
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/volumes
+    values:
+      - ./server/values/volumes.yaml.gotmpl
+
+  - name: qdb
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/qdb
+    values:
+      - ./server/values/qdb.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config"
+      - "{{ .Values.serverNamespace }}/volumes"
+
+  - name: openldap
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: openldap/openldap
+    version: 2.0.4
+    values:
+      - ./server/values/openldap.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/volumes"
+
+  - name: hydra
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ory/hydra
+    version: 0.5.0
+    values:
+      - ./server/values/hydra.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config"
+      - "{{ .Values.serverNamespace }}/qdb"
+
+  - name: config-api
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/config_api
+    values:
+      - ./server/values/config_api.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/qdb"
+      - "{{ .Values.serverNamespace }}/hydra"
+
+  - name: influxdb
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: influxdata/influxdb
+    version: 4.8.10
+    values:
+      - ./server/values/influxdb.yaml
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: mongodb
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: bitnami/mongodb
+    version: 10.3.3
+    values:
+      - ./server/values/mongodb.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: rabbitmq
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: bitnami/rabbitmq
+    version: 8.6.1
+    values:
+      - ./server/values/rabbitmq.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: redis
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: bitnami/redis
+    version: 12.2.4
+    values:
+      - ./server/values/redis.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: neo4j
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/neo4j
+    values:
+      - ./server/values/neo4j.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: auth-api
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/app_api
+    values:
+      - ./server/values/auth_api.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: data-api
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/app_api
+    values:
+      - ./server/values/data_api.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: management-api
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/app_api
+    values:
+      - ./server/values/management_api.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: faces-archive-api
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/app_api
+    values:
+      - ./server/values/faces_archive_api.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: ftp
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/ftp
+    values:
+      - ./server/values/ftp.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: h5serv
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/h5serv
+    values:
+      - ./server/values/h5serv.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+
+  - name: nginx
+    namespace: "{{ .Values.serverNamespace }}"
+    chart: ./server/charts/nginx
+    values:
+      - ./server/values/nginx.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}/config-api"
+      - "{{ .Values.serverNamespace }}/openldap"
+      - "{{ .Values.serverNamespace }}/hydra"

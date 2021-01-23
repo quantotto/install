@@ -1,0 +1,55 @@
+environments:
+  default:
+    values:
+    - base/base_env.yaml
+    - customer/{{ customer_id }}/{{ customer_id }}_env.yaml
+    secrets:
+    - base/base_secrets.yaml
+    - customer/{{ customer_id }}/{{ customer_id }}_secrets.yaml
+
+releases:
+  - name: customerconfig
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/config
+    values:
+      - ./customer/values/config.yaml.gotmpl
+
+  - name: portal
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/app
+    values:
+      - ./customer/values/portal.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/customerconfig"
+
+  - name: real-time-data
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/app
+    values:
+      - ./customer/values/real_time_data.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
+
+  - name: triggers-runner
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/app
+    values:
+      - ./customer/values/triggers_runner.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
+
+  - name: training-scheduler
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/app
+    values:
+      - ./customer/values/training_scheduler.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
+
+  - name: faces-recognizer
+    namespace: "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}"
+    chart: ./customer/charts/app
+    values:
+      - ./customer/values/faces_recognizer.yaml.gotmpl
+    needs:
+      - "{{ .Values.serverNamespace }}-{{ .Values.customer.id }}/portal"
