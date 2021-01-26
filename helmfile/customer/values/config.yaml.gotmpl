@@ -2,10 +2,12 @@ portalFqdn: {{ .Values.portalFqdn }}
 clusterDomain: {{ .Values.clusterDomain }}
 
 image:
-  repository: {{ .Values.image.repository }}
-  tag: {{ .Values.image.tag }}
-  pullPolicy: IfNotPresent
-  pullSecret: {{ .Values.image.pullSecret.name }}
+  pullSecret:
+    name: {{ .Values.image.pullSecret.name }}
+    repositoryUrl: {{ .Values.image.pullSecret.repositoryUrl }}
+    create: true
+    user: {{ .Values.image.pullSecret.user }}
+    password: {{ .Values.image.pullSecret.password }}
 
 
 customer:
@@ -19,7 +21,7 @@ customer:
     email: {{ .Values.customer.admin.email | quote }}
     password: {{ .Values.customer.admin.password | quote }}
 
-keys:
+encryptionKeys:
   fernet: {{ .Values.encryptionKeys.fernet }}
   privateKey: {{ .Values.encryptionKeys.privateKey }}
   publicKey: {{ .Values.encryptionKeys.publicKey }}
