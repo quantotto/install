@@ -83,6 +83,6 @@ data:
   ACTOR_SYSTEM_PORT_RANGE: {{ .Values.facesRecognizer.asys.portsRange }}
   ARCHIVE_DOMAIN: "{{ .Values.customer.id }}.data.quantotto.io"
   H5_SERV_ENDPOINT: {{ .Values.h5serv.url }}
-  KNOWN_FACES_GROUP: {{ .Values.facesRecognizer.knownFacesGroup }}
-  FACE_CLASSIFIER_NAME:  {{ .Values.facesRecognizer.faceClassifierName }}
+  KNOWN_FACES_GROUP: {{ .Values.facesRecognizer.knownFacesGroup | default "" | quote }}
+  FACE_CLASSIFIER_NAME:  {{ .Values.facesRecognizer.faceClassifierName | default "" | quote }}
 
