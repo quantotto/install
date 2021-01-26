@@ -9,7 +9,7 @@ data:
   ADMIN_EMAIL: "{{ .Values.customer.admin.email }}"
   ADMIN_LOGIN: "{{ .Values.customer.admin.login }}"
   ADMIN_FIRST_NAME: "{{ .Values.customer.admin.fname }}"
-{{- if .Values.persistence.storageClass }}
+{{- if .Values.customer.admin.mname }}
   ADMIN_MIDDLE_NAME: "{{ .Values.customer.admin.mname }}"
 {{- else }}
   ADMIN_MIDDLE_NAME: ""
