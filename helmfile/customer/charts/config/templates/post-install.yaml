@@ -38,14 +38,14 @@ spec:
         envFrom:
         - configMapRef:
             name: api-common
-        - configMapref:
-            name: {{ .Values.customer.id }}-config
+        - configMapRef:
+            name: customer-config
         - secretRef:
             name: common
         - secretRef:
             name: config-super-admin
         - secretRef:
-            name: {{ .Values.customer.id }}-secret
+            name: customer-secret
         command:
         - python
         - "scripts/k8s_customer.py"
