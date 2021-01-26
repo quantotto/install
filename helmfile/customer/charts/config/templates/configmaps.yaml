@@ -34,7 +34,7 @@ metadata:
 data:
   LICENSE_PUBLIC_KEY_PATH: {{ .Values.portal.licensePublicKeyPath }}
   MODELS_FOLDER: {{ .Values.modelsFolder }}
-  SCENARIO_GROUPS: {{ .Values.scenarioGroups }}
+  SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
   ACTOR_SYSTEM_LISTEN_ON: {{ .Values.portal.asys.listenOn }}
   MC_ACTOR_SYSTEM: {{ .Values.portal.asys.master }}
   ACTOR_SYSTEM_PORT_RANGE: {{ .Values.portal.asys.portsRange }}
@@ -59,7 +59,7 @@ metadata:
   name: training-scheduler
 data:
   MODELS_FOLDER: {{ .Values.modelsFolder }}
-  SCENARIO_GROUPS: {{ .Values.scenarioGroups }}
+  SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
