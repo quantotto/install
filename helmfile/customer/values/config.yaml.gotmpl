@@ -36,7 +36,7 @@ scenarioGroups: ""
 
 hydra:
   apiUrl: http://hydra.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:4445
-  internalPublicUrl: http://hydra.{{ serverNamespace }}.svc.{{ .Values.clusterDomain }}:4444
+  internalPublicUrl: http://hydra.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:4444
 
 redis:
   url: "redis://redis.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:6379"
