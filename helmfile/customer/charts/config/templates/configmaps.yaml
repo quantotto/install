@@ -4,12 +4,16 @@ kind: ConfigMap
 metadata:
   name: customer-config
 data:
-  CUSTOMER_ID: {{ .Values.customer.id }}
-  CUSTOMER_NAME: {{ .Values.customer.name }}
-  ADMIN_EMAIL: {{ .Values.customer.admin.email }}
-  ADMIN_LOGIN: {{ .Values.customer.admin.login }}
-  ADMIN_FIRST_NAME: {{ .Values.customer.admin.fname }}
-  ADMIN_MIDDLE_NAME: {{ .Values.customer.admin.mname }}
+  CUSTOMER_ID: "{{ .Values.customer.id }}"
+  CUSTOMER_NAME: "{{ .Values.customer.name }}"
+  ADMIN_EMAIL: "{{ .Values.customer.admin.email }}"
+  ADMIN_LOGIN: "{{ .Values.customer.admin.login }}"
+  ADMIN_FIRST_NAME: "{{ .Values.customer.admin.fname }}"
+{{- if .Values.persistence.storageClass }}
+  ADMIN_MIDDLE_NAME: "{{ .Values.customer.admin.mname }}"
+{{- else }}
+  ADMIN_MIDDLE_NAME: ""
+{{- end }}
   ADMIN_LAST_NAME: {{ .Values.customer.admin.lname }}
 ---
 apiVersion: v1
