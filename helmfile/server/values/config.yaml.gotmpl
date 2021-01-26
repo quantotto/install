@@ -12,8 +12,10 @@ image:
 
 encryptionKeys:
   fernet: {{ .Values.encryptionKeys.fernet }}
-  privateKey: {{ .Values.encryptionKeys.privateKey }}
-  publicKey: {{ .Values.encryptionKeys.publicKey }}
+  privateKey: |
+{{ .Values.encryptionKeys.privateKey | indent 4 | b64enc | quote }}
+  publicKey: |
+{{ .Values.encryptionKeys.publicKey | indent 4 | b64enc | quote }}
   privateKeyPassword: {{ .Values.encryptionKeys.privateKeyPassword }}
   configClientSecret: {{ .Values.encryptionKeys.configClientSecret }}
 
