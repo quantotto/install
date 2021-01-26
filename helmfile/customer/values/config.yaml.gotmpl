@@ -35,11 +35,11 @@ modelsFolder: /training/models
 scenarioGroups: ""
 
 hydra:
-  apiUrl: http://hydra:4445
-  internalPublicUrl: http://hydra:4444
+  apiUrl: http://hydra.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:4445
+  internalPublicUrl: http://hydra.{{ serverNamespace }}.svc.{{ .Values.clusterDomain }}:4444
 
 redis:
-  url: "redis://redis:6379"
+  url: "redis://redis.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:6379"
 
 configApi:
   url: "http://config-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
