@@ -17,14 +17,14 @@ kind: ConfigMap
 metadata:
   name: app-common
 data:
-  HYDRA_API_URL: {{ .Values.hydra.apiUrl }}
-  HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl }}
-  CONFIG_API_URL: {{ .Values.configApi.url }}
-  MGMT_API_URL: {{ .Values.managementApi.url }}
-  DATA_API_URL: {{ .Values.dataApi.url }}
-  REDIS_URL: {{ .Values.redis.url }}
-  HYDRA_CONFIG_CLIENT_ID: {{ .Values.configApi.clientId }}
-  HYDRA_CLIENT_ID: {{ .Values.customer.id }}
+  HYDRA_API_URL: {{ .Values.hydra.apiUrl | quote }}
+  HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl | quote }}
+  CONFIG_API_URL: {{ .Values.configApi.url | quote }}
+  MGMT_API_URL: {{ .Values.managementApi.url | quote }}
+  DATA_API_URL: {{ .Values.dataApi.url | quote }}
+  REDIS_URL: {{ .Values.redis.url | quote }}
+  HYDRA_CONFIG_CLIENT_ID: {{ .Values.configApi.clientId | quote }}
+  HYDRA_CLIENT_ID: {{ .Values.customer.id | quote }}
   OAUTHLIB_INSECURE_TRANSPORT: "yes"
 ---
 apiVersion: v1
@@ -32,19 +32,20 @@ kind: ConfigMap
 metadata:
   name: portal
 data:
-  LICENSE_PUBLIC_KEY_PATH: {{ .Values.portal.licensePublicKeyPath }}
-  MODELS_FOLDER: {{ .Values.modelsFolder }}
+  LICENSE_PUBLIC_KEY_PATH: {{ .Values.portal.licensePublicKeyPath | quote }}
+  MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
-  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.portal.asys.listenOn }}
-  MC_ACTOR_SYSTEM: {{ .Values.portal.asys.master }}
-  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.portal.asys.portsRange }}
+  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.portal.asys.listenOn | quote }}
+  MC_ACTOR_SYSTEM: {{ .Values.portal.asys.master | quote }}
+  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.portal.asys.portsRange | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: portal-files
 data:
-  license_public_key.pem: {{ .Values.encryptionKeys.publicKey }}
+  license_public_key.pem:
+{{ .Values.encryptionKeys.publicKey | indent 4 }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -58,7 +59,7 @@ kind: ConfigMap
 metadata:
   name: training-scheduler
 data:
-  MODELS_FOLDER: {{ .Values.modelsFolder }}
+  MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
 ---
 apiVersion: v1
@@ -66,11 +67,11 @@ kind: ConfigMap
 metadata:
   name: triggers-runner
 data:
-  MODELS_FOLDER: {{ .Values.modelsFolder }}
+  MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
-  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.triggersRunner.asys.listenOn }}
-  MC_ACTOR_SYSTEM: {{ .Values.triggersRunner.asys.master }}
-  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.triggersRunner.asys.portsRange }}
+  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.triggersRunner.asys.listenOn | quote }}
+  MC_ACTOR_SYSTEM: {{ .Values.triggersRunner.asys.master | quote }}
+  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.triggersRunner.asys.portsRange | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -78,11 +79,11 @@ metadata:
   name: faces-recognizer
 data:
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
-  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.facesRecognizer.asys.listenOn }}
-  MC_ACTOR_SYSTEM: {{ .Values.facesRecognizer.asys.master }}
-  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.facesRecognizer.asys.portsRange }}
+  ACTOR_SYSTEM_LISTEN_ON: {{ .Values.facesRecognizer.asys.listenOn | quote }}
+  MC_ACTOR_SYSTEM: {{ .Values.facesRecognizer.asys.master | quote }}
+  ACTOR_SYSTEM_PORT_RANGE: {{ .Values.facesRecognizer.asys.portsRange | quote }}
   ARCHIVE_DOMAIN: "{{ .Values.customer.id }}.data.quantotto.io"
-  H5_SERV_ENDPOINT: {{ .Values.h5serv.url }}
+  H5_SERV_ENDPOINT: {{ .Values.h5serv.url | quote }}
   KNOWN_FACES_GROUP: {{ .Values.facesRecognizer.knownFacesGroup | default "" | quote }}
   FACE_CLASSIFIER_NAME:  {{ .Values.facesRecognizer.faceClassifierName | default "" | quote }}
 

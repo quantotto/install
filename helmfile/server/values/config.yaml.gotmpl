@@ -41,13 +41,13 @@ neo4j:
   password: {{ .Values.neo4j.password | quote }}
 
 hydra:
-  apiUrl: http://hydra:4445
-  internalPublicUrl: http://hydra:4444
+  apiUrl: "http://hydra:4445"
+  internalPublicUrl: "http://hydra:4444"
 
 configApi:
   package: "quantotto.config_api"
-  configFile: /myconfig/myconfig.yaml
-  url: http://config-api:5000/v1
+  configFile: "/myconfig/myconfig.yaml"
+  url: "http://config-api:5000/v1"
   clientId: config_api_backendapp
 
 authApi:
@@ -56,17 +56,17 @@ authApi:
 managementApi:
   package: "quantotto.mgmt_api"
   redisUrl: "redis://redis:6379"
-  baseDataPath: /training
-  licensePublicKeyPath: /opt/quantotto/keys/license_public_key.pem
-  packagesFolder: /packages
+  baseDataPath: "/training"
+  licensePublicKeyPath: "/opt/quantotto/keys/license_public_key.pem"
+  packagesFolder: "/packages"
 
 dataApi:
   package: "quantotto.data_api"
-  privateKeyPath: /opt/quantotto/keys/private_key.pem
+  privateKeyPath: "/opt/quantotto/keys/private_key.pem"
   mediaServerFqdn: {{ .Values.portalFqdn }}
 
 facesArchiveApi:
   package: "quantotto.faces_archive_api"
-  h5servEndpoint: http://h5serv:5000
-  archiveDomain: faces_archive.data.quantotto.io
+  h5servEndpoint: "http://h5serv:5000"
+  archiveDomain: "faces_archive.data.quantotto.io"
 

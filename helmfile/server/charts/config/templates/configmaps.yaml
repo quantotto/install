@@ -4,9 +4,9 @@ kind: ConfigMap
 metadata:
   name: config-api
 data:
-  API_PACKAGE: {{ .Values.configApi.package }}
-  HYDRA_API_URL: {{ .Values.hydra.apiUrl }}
-  CONFIG_FILE: {{ .Values.configApi.configFile }}
+  API_PACKAGE: {{ .Values.configApi.package | quote }}
+  HYDRA_API_URL: {{ .Values.hydra.apiUrl | quote }}
+  CONFIG_FILE: {{ .Values.configApi.configFile | quote }}
   OAUTHLIB_INSECURE_TRANSPORT: "yes"
 ---
 apiVersion: v1
@@ -14,10 +14,10 @@ kind: ConfigMap
 metadata:
   name: api-common
 data:
-  HYDRA_API_URL: {{ .Values.hydra.apiUrl }}
-  HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl }}
-  CONFIG_API_URL: {{ .Values.configApi.url }}
-  HYDRA_CONFIG_CLIENT_ID: {{ .Values.configApi.clientId }}
+  HYDRA_API_URL: {{ .Values.hydra.apiUrl | quote }}
+  HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl | quote }}
+  CONFIG_API_URL: {{ .Values.configApi.url | quote }}
+  HYDRA_CONFIG_CLIENT_ID: {{ .Values.configApi.clientId | quote }}
   OAUTHLIB_INSECURE_TRANSPORT: "yes"
 ---
 apiVersion: v1
@@ -25,43 +25,44 @@ kind: ConfigMap
 metadata:
   name: auth-api
 data:
-  API_PACKAGE: {{ .Values.authApi.package }}
+  API_PACKAGE: {{ .Values.authApi.package | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mgmt-api
 data:
-  API_PACKAGE: {{ .Values.managementApi.package }}
-  REDIS_URL: {{ .Values.managementApi.redisUrl }}
-  BASE_DATA_PATH: {{ .Values.managementApi.baseDataPath }}
-  LICENSE_PUBLIC_KEY_PATH: {{ .Values.managementApi.licensePublicKeyPath }}
-  PACKAGES_FOLDER: {{ .Values.managementApi.packagesFolder }}
+  API_PACKAGE: {{ .Values.managementApi.package | quote }}
+  REDIS_URL: {{ .Values.managementApi.redisUrl | quote }}
+  BASE_DATA_PATH: {{ .Values.managementApi.baseDataPath | quote }}
+  LICENSE_PUBLIC_KEY_PATH: {{ .Values.managementApi.licensePublicKeyPath | quote }}
+  PACKAGES_FOLDER: {{ .Values.managementApi.packagesFolder | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mgmt-api-files
 data:
-  license_public_key.pem: {{ .Values.encryptionKeys.publicKey }}
+  license_public_key.pem: |
+{{ .Values.encryptionKeys.publicKey | indent 4 }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: data-api
 data:
-  API_PACKAGE: {{ .Values.dataApi.package }}
-  PRIVATE_KEY_PATH: {{ .Values.dataApi.privateKeyPath }}
-  MEDIA_SERVER_FQDN: {{ .Values.dataApi.mediaServerFqdn }}
+  API_PACKAGE: {{ .Values.dataApi.package | quote }}
+  PRIVATE_KEY_PATH: {{ .Values.dataApi.privateKeyPath | quote }}
+  MEDIA_SERVER_FQDN: {{ .Values.dataApi.mediaServerFqdn | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: faces-archive-api
 data:
-  API_PACKAGE: {{ .Values.facesArchiveApi.package }}
-  H5_SERV_ENDPOINT: {{ .Values.facesArchiveApi.h5servEndpoint }}
-  ARCHIVE_DOMAIN: {{ .Values.facesArchiveApi.archiveDomain }}
+  API_PACKAGE: {{ .Values.facesArchiveApi.package | quote }}
+  H5_SERV_ENDPOINT: {{ .Values.facesArchiveApi.h5servEndpoint | quote }}
+  ARCHIVE_DOMAIN: {{ .Values.facesArchiveApi.archiveDomain | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
