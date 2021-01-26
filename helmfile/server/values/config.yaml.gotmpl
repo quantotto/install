@@ -21,7 +21,7 @@ encryptionKeys:
 
 
 openldap:
-  uri: {{ .Values.openldap.uri }}
+  uri: ldap://{{ .Values.openldap.host }}.{{ .Values.serverNamespace}}.svc.{{ .Values.clusterDomain }}:{{ .Values.openldap.port }}
   adminPassword: {{ .Values.openldap.adminPassword }}
 
 qdb:
