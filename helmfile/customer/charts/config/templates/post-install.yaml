@@ -37,7 +37,13 @@ spec:
         image: "{{ .Values.image.repository }}/app_base:{{ .Values.image.tag }}"
         env:
         - name: HYDRA_SUPER_ADMIN_SECRET
-          value: {{ .Values.encryptionKeys.superAdminSecret }}
+          value: "{{ .Values.encryptionKeys.superAdminSecret }}"
+        - name: QDB_USER
+          value: "{{ .Values.qdb.user }}"
+        - name: QDB_PASSWORD
+          value: "{{ .Values.qdb.password }}"
+        - name: QDB_HOST
+          value: "{{ .Values.qdb.host }}"
         envFrom:
         - configMapRef:
             name: app-common

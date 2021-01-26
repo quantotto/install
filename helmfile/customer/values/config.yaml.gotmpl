@@ -36,6 +36,11 @@ encryptionKeys:
 modelsFolder: /training/models
 scenarioGroups: ""
 
+qdb:
+  host: {{ .Values.qdb.host }}.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}
+  user: {{ .Values.qdb.user }}
+  password: {{ .Values.qdb.password }}
+
 hydra:
   apiUrl: http://hydra.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:4445
   internalPublicUrl: http://hydra.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:4444
