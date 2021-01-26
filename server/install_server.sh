@@ -18,6 +18,10 @@ fi
 
 ACCOUNT=quantotto
 APP_FOLDER=/opt/quantotto
+VERSION=$1
+if [ !-z ${VERSION} ]; then
+    VERSION="~=${VERSION}.0"
+fi
 
 echo "Updating system"
 sudo apt-get -yy update && sudo apt-get -yy upgrade
@@ -52,7 +56,7 @@ pip install -U pip
 echo -n "Activated virtual environment"
 
 echo "Installing Quantotto Server CLI package"
-pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server==2.12.150
+pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server${VERSION} quantotto.cli_k8s${VERSION}
 
 echo "Cloning rpi image builder repo"
 git clone https://github.com/RPi-Distro/pi-gen ${APP_FOLDER}/pi-gen
@@ -76,6 +80,9 @@ export VIRTUAL_ENV="${APP_FOLDER}/.venv"
 export PATH="${APP_FOLDER}/.venv/bin:$PATH"
 export QUANTOTTO_CA_CERT="${APP_FOLDER}/certs/fullchain.pem"
 EOF
+
+sudo mkdir -p ${APP_FOLDER}/install/helmfile
+sudo cp -R ../hemlfile/* ${APP_FOLDER}/install/helmfile
 
 sudo chmod ugo+x /etc/profile.d/quantotto.sh
 sudo chown -R ${ACCOUNT}:${ACCOUNT} ${APP_FOLDER}

@@ -4,4 +4,4 @@ image:
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
 
-masqueradeAddress: {{ .Values.ftp.masqueradeAddress }}
+masqueradeAddress: {{ .Values.portalFqdn }}
