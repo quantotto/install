@@ -4,17 +4,13 @@ kind: ConfigMap
 metadata:
   name: customer-config
 data:
-  CUSTOMER_ID: "{{ .Values.customer.id }}"
-  CUSTOMER_NAME: "{{ .Values.customer.name }}"
-  ADMIN_EMAIL: "{{ .Values.customer.admin.email }}"
-  ADMIN_LOGIN: "{{ .Values.customer.admin.login }}"
-  ADMIN_FIRST_NAME: "{{ .Values.customer.admin.fname }}"
-{{- if .Values.customer.admin.mname }}
-  ADMIN_MIDDLE_NAME: "{{ .Values.customer.admin.mname }}"
-{{- else }}
-  ADMIN_MIDDLE_NAME: ""
-{{- end }}
-  ADMIN_LAST_NAME: {{ .Values.customer.admin.lname }}
+  CUSTOMER_ID: {{ .Values.customer.id | quote }}
+  CUSTOMER_NAME: {{ .Values.customer.name | quote }}
+  ADMIN_EMAIL: {{ .Values.customer.admin.email | quote }}
+  ADMIN_LOGIN: {{ .Values.customer.admin.login | quote }}
+  ADMIN_FIRST_NAME: {{ .Values.customer.admin.fname | quote }}
+  ADMIN_MIDDLE_NAME: {{ .Values.customer.admin.mname | default "" | quote }}
+  ADMIN_LAST_NAME: {{ .Values.customer.admin.lname | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -55,7 +51,7 @@ kind: ConfigMap
 metadata:
   name: real-time-data
 data:
-  SCENARIO_GROUPS: {{ .Values.scenarioGroups }}
+  SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -71,7 +67,7 @@ metadata:
   name: triggers-runner
 data:
   MODELS_FOLDER: {{ .Values.modelsFolder }}
-  SCENARIO_GROUPS: {{ .Values.scenarioGroups }}
+  SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
   ACTOR_SYSTEM_LISTEN_ON: {{ .Values.triggersRunner.asys.listenOn }}
   MC_ACTOR_SYSTEM: {{ .Values.triggersRunner.asys.master }}
   ACTOR_SYSTEM_PORT_RANGE: {{ .Values.triggersRunner.asys.portsRange }}
@@ -81,7 +77,7 @@ kind: ConfigMap
 metadata:
   name: faces-recognizer
 data:
-  SCENARIO_GROUPS: {{ .Values.scenarioGroups }}
+  SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
   ACTOR_SYSTEM_LISTEN_ON: {{ .Values.facesRecognizer.asys.listenOn }}
   MC_ACTOR_SYSTEM: {{ .Values.facesRecognizer.asys.master }}
   ACTOR_SYSTEM_PORT_RANGE: {{ .Values.facesRecognizer.asys.portsRange }}
