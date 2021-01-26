@@ -31,8 +31,16 @@ encryptionKeys:
 modelsFolder: /training/models
 scenarioGroups: ""
 
+hydra:
+  apiUrl: http://hydra:4445
+  internalPublicUrl: http://hydra:4444
+
+redis:
+  url: "redis://redis:6379"
+
 configApi:
   url: "http://config-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
+  clientId: config_api_backendapp
 
 managementApi:
   url: "http://mgmt-api.{{ .Values.serverNamespace }}.svc.{{ .Values.clusterDomain }}:5000/v1"
@@ -61,5 +69,5 @@ facesRecognizer:
     listenOn: "faces-recognizer:15100"
     master: "faces-recognizer:15100"
     portsRange: "15101-15299"
-  knownFaceGroup: ""
+  knownFacesGroup: ""
   faceClassifierName: "trackfaces"
