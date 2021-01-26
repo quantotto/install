@@ -35,15 +35,16 @@ spec:
       containers:
       - name: configure-customer
         image: "{{ .Values.image.repository }}/app_base:{{ .Values.image.tag }}"
+        env:
+        - name: HYDRA_SUPER_ADMIN_SECRET
+          value: {{ .Values.encryptionKeys.superAdminSecret }}
         envFrom:
         - configMapRef:
-            name: api-common
+            name: app-common
         - configMapRef:
             name: customer-config
         - secretRef:
             name: common
-        - secretRef:
-            name: config-super-admin
         - secretRef:
             name: customer-secret
         command:
