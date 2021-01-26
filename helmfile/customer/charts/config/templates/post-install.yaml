@@ -36,7 +36,7 @@ spec:
       - name: configure-customer
         image: "{{ .Values.image.repository }}/app_base:{{ .Values.image.tag }}"
         env:
-        - name: HYDRA_SUPER_ADMIN_SECRET
+        - name: SUPER_ADMIN_SECRET
           value: "{{ .Values.encryptionKeys.superAdminSecret }}"
         - name: QDB_USER
           value: "{{ .Values.qdb.user }}"
