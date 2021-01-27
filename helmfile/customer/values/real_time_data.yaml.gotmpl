@@ -4,6 +4,9 @@ image:
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
 
+customer:
+  id: {{ .Values.customer.id }}
+
 app:
   name: real_time_data
 

@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.name | replace "_" "-" }}
+  name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
   labels:
-    app: {{ .Values.app.name | replace "_" "-" }}
+    app: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
 spec:
   selector:
-    app: {{ .Values.app.name | replace "_" "-" }}
+    app: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
   ports:
-  - name: {{ .Values.app.name | replace "_" "-" }}
+  - name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
     port: 5000
     targetPort: 5000
 status:

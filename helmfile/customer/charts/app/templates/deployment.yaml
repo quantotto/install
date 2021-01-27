@@ -1,36 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.app.name | replace "_" "-" }}
+  name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.app.name | replace "_" "-" }}
+      app: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
   template:
     metadata:
+      name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
       labels:
-        app: {{ .Values.app.name | replace "_" "-" }}
+        app: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
     spec:
       volumes:
 {{ toYaml .Values.volumes | indent 8 }}
       containers:
-      - name: {{ .Values.app.name | replace "_" "-" }}
+      - name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
         image: "{{ .Values.image.repository }}/{{ .Values.app.name }}:{{ .Values.image.tag }}"
         resources: { }
         ports:
         - containerPort: 5000
         envFrom:
         - configMapRef:
-            name: customer-config
+            name: customer-config-{{ .Values.customer.id }}
         - configMapRef:
-            name: app-common
+            name: app-common-{{ .Values.customer.id }}
         - configMapRef:
-            name: {{ .Values.app.name | replace "_" "-" }}
+            name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
         - secretRef:
-            name: customer-secret
+            name: customer-secret-{{ .Values.customer.id }}
         - secretRef:
-            name: common
+            name: common-{{ .Values.customer.id }}
         volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
       restartPolicy: Always

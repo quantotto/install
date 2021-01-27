@@ -4,6 +4,9 @@ image:
   pullPolicy: IfNotPresent
   pullSecret: {{ .Values.image.pullSecret.name }}
 
+customer:
+  id: {{ .Values.customer.id }}
+
 app:
   name: portal
 
@@ -27,7 +30,7 @@ volumes:
       claimName: packages-pvc
   - name: public-key-pem
     configMap:
-      name: portal-files
+      name: portal-files-{{ .Values.customer.id }}
       items:
       - key: license_public_key.pem
         path: license_public_key.pem

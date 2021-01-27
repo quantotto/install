@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: customer-config
+  name: customer-config-{{ .Values.customer.id }}
 data:
   CUSTOMER_ID: {{ .Values.customer.id | quote }}
   CUSTOMER_NAME: {{ .Values.customer.name | quote }}
@@ -15,7 +15,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-common
+  name: app-common-{{ .Values.customer.id }}
 data:
   HYDRA_API_URL: {{ .Values.hydra.apiUrl | quote }}
   HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl | quote }}
@@ -30,7 +30,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: portal
+  name: portal-{{ .Values.customer.id }}
 data:
   LICENSE_PUBLIC_KEY_PATH: {{ .Values.portal.licensePublicKeyPath | quote }}
   MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
@@ -42,7 +42,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: portal-files
+  name: portal-files-{{ .Values.customer.id }}
 data:
   license_public_key.pem:
 {{ .Values.encryptionKeys.publicKey | indent 4 }}
@@ -50,14 +50,14 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: real-time-data
+  name: real-time-data-{{ .Values.customer.id }}
 data:
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: training-scheduler
+  name: training-scheduler-{{ .Values.customer.id }}
 data:
   MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
@@ -65,7 +65,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: triggers-runner
+  name: triggers-runner-{{ .Values.customer.id }}
 data:
   MODELS_FOLDER: {{ .Values.modelsFolder | quote }}
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
@@ -76,7 +76,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: faces-recognizer
+  name: faces-recognizer-{{ .Values.customer.id }}
 data:
   SCENARIO_GROUPS: {{ .Values.scenarioGroups | default "" | quote }}
   ACTOR_SYSTEM_LISTEN_ON: {{ .Values.facesRecognizer.asys.listenOn | quote }}
