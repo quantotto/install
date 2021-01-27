@@ -26,7 +26,7 @@ spec:
       volumes:
         - name: keys
           secret:
-            secretName: private-key
+            secretName: private-key-{{ .Values.customer.id }}
             items:
             - key: public.key
               path: public_key.pem
@@ -46,13 +46,13 @@ spec:
           value: "{{ .Values.qdb.host }}"
         envFrom:
         - configMapRef:
-            name: app-common
+            name: app-common-{{ .Values.customer.id }}
         - configMapRef:
-            name: customer-config
+            name: customer-config-{{ .Values.customer.id }}
         - secretRef:
-            name: common
+            name: common-{{ .Values.customer.id }}
         - secretRef:
-            name: customer-secret
+            name: customer-secret-{{ .Values.customer.id }}
         command:
         - python
         - "scripts/k8s_customer.py"
