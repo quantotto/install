@@ -14,6 +14,7 @@ kind: ConfigMap
 metadata:
   name: api-common
 data:
+  PORTAL_FQDN: {{ .Values.portalFqdn | quote }}
   HYDRA_API_URL: {{ .Values.hydra.apiUrl | quote }}
   HYDRA_PUBLIC_URL: {{ .Values.hydra.internalPublicUrl | quote }}
   CONFIG_API_URL: {{ .Values.configApi.url | quote }}
