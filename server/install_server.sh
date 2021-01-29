@@ -101,7 +101,7 @@ EOF
 
 
 sudo mkdir -p ${APP_FOLDER}/install/helmfile
-sudo cp -R ../hemlfile/* ${APP_FOLDER}/install/helmfile
+sudo cp -R ../helmfile/* ${APP_FOLDER}/install/helmfile
 
 sudo chmod ugo+x /etc/profile.d/quantotto.sh
 sudo chown -R ${ACCOUNT}:${ACCOUNT} ${APP_FOLDER}
