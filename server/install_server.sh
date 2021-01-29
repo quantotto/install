@@ -19,7 +19,7 @@ fi
 ACCOUNT=quantotto
 APP_FOLDER=/opt/quantotto
 VERSION=$1
-if [ !-z ${VERSION} ]; then
+if [ ! -z ${VERSION} ]; then
     VERSION="~=${VERSION}.0"
 fi
 
