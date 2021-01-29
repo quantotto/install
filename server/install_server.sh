@@ -85,7 +85,7 @@ sudo tee -a ${APP_FOLDER}/agent_cfg.sh >/dev/null <<'EOF'
 #!/bin/bash
 
 if [ -z $1 ] || [ -z $2 ]; then
-    echo "Usage: source agent_cfg.sh <customer ID> <server namespace>"
+    echo "Usage: source $QUANTOTTO_HOME/agent_cfg.sh <customer ID> <server namespace>"
 else
     echo "CUSTOMER_ID=$1" > $QUANTOTTO_HOME/.env
     echo "FRAMES_PORT=15000" >> $QUANTOTTO_HOME/.env
