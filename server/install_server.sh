@@ -58,8 +58,12 @@ echo "Activated virtual environment"
 echo "Installing Quantotto Server CLI package"
 pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server${VERSION} quantotto.cli_k8s${VERSION}
 
-echo "Cloning rpi image builder repo"
-git clone https://github.com/RPi-Distro/pi-gen ${APP_FOLDER}/pi-gen
+echo "Downloading rpi image builder"
+PI_GEN_RELEASE=2020-12-02-raspbian-buster
+sudo curl https://codeload.github.com/RPi-Distro/pi-gen/tar.gz/${PI_GEN_RELEASE} -o ${APP_FOLDER}/pi-gen.tar.gz
+sudo tar xzf ${APP_FOLDER}/pi-gen.tar.gz -C ${APP_FOLDER}
+sudo mv ${APP_FOLDER}/pi-gen-${PI_GEN_RELEASE} ${APP_FOLDER}/pi-gen
+sudo rm -rf ${APP_FOLDER}/pi-gen.tar.gz
 sudo tee -a ${APP_FOLDER}/pi-gen/config >/dev/null <<EOF
 IMG_NAME="quantotto"
 DEPLOY_DIR="\$BASE_DIR/base_image"
