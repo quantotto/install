@@ -74,8 +74,8 @@ KEYBOARD_LAYOUT="English (US)"
 TIMEZONE_DEFAULT="America/Los_Angeles"
 ENABLE_SSH=1
 EOF
-touch ${APP_FOLDER}/pi-gen/stage3/SKIP ${APP_FOLDER}/pi-gen/stage4/SKIP ${APP_FOLDER}/pi-gen/stage5/SKIP
-touch ${APP_FOLDER}/pi-gen/stage4/SKIP_IMAGES ${APP_FOLDER}/pi-gen/stage5/SKIP_IMAGES
+sudo touch ${APP_FOLDER}/pi-gen/stage3/SKIP ${APP_FOLDER}/pi-gen/stage4/SKIP ${APP_FOLDER}/pi-gen/stage5/SKIP
+sudo touch ${APP_FOLDER}/pi-gen/stage4/SKIP_IMAGES ${APP_FOLDER}/pi-gen/stage5/SKIP_IMAGES
 
 echo "Setting up environment variables"
 sudo tee -a /etc/profile.d/quantotto.sh >/dev/null <<EOF
