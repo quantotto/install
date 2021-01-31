@@ -19,6 +19,11 @@ encryptionKeys:
   privateKeyPassword: {{ .Values.encryptionKeys.privateKeyPassword }}
   configClientSecret: {{ .Values.encryptionKeys.configClientSecret }}
 
+tls:
+  cert: |
+{{ .Values.tls.cert | indent 4 }}
+  key: |
+{{ .Values.tls.key | indent 4 }}
 
 openldap:
   uri: ldap://{{ .Values.openldap.host }}.{{ .Values.serverNamespace}}.svc.{{ .Values.clusterDomain }}:{{ .Values.openldap.port }}
