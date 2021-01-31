@@ -95,7 +95,7 @@ else
     echo "FRAMES_PORT=15000" >> $QUANTOTTO_HOME/.env
     echo "HYDRA_CUSTOMER_CLIENT_SECRET=$(kubectl get secret/customer-secret-$1 -n $2 --template={{.data.HYDRA_CLIENT_SECRET}} | base64 --decode)" >> $QUANTOTTO_HOME/.env
     echo "SERVER_IP=$(kubectl get service nginx -n $2 | grep nginx | awk '{ printf($4); }')" >> $QUANTOTTO_HOME/.env
-    echo "PORTAL_FQDN=$(kubectl get configmap/api-common -n $2 --template={{.data.PORTAL_FQDN}})" >> $QUANTOTTO_HOME/.env
+    echo "SERVER_FQDN=$(kubectl get configmap/api-common -n $2 --template={{.data.PORTAL_FQDN}})" >> $QUANTOTTO_HOME/.env
 
     mkdir -p $QUANTOTTO_HOME/certs
     kubectl get secret/certs -n quantotto -o 'go-template={{index .data "tls.crt"}}' | base64 --decode > $QUANTOTTO_HOME/certs/quantotto.crt
