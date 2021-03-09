@@ -48,6 +48,6 @@ spec:
         volumeMounts:
         - name: full-myconfig-data
           mountPath: /myconfig
-      imagePullPolicy: Always
+        imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

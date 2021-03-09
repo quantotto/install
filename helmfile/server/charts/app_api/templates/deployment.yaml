@@ -21,6 +21,7 @@ spec:
       containers:
       - name: {{ .Values.api.name | replace "_" "-" }}
         image: "{{ .Values.image.repository }}/api_base:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
         resources:
 {{ toYaml .Values.api.resources | indent 10 }}
         ports:
@@ -35,6 +36,5 @@ spec:
         volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
       restartPolicy: Always
-      imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

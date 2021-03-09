@@ -21,6 +21,7 @@ spec:
       containers:
       - name: qdb
         image: "{{ .Values.image.repository }}/db:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
@@ -41,7 +42,6 @@ spec:
           mountPath: /var/lib/postgresql/data
           readOnly: false
       restartPolicy: {{ default "Always" .Values.restartPolicy | quote }}
-      imagePullPolicy: Always
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       imagePullSecrets:

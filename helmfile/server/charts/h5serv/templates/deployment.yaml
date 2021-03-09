@@ -15,6 +15,7 @@ spec:
       containers:
       - name: h5serv
         image: "{{ .Values.image.repository }}/h5serv:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
         resources: {}
         ports:
         - containerPort: 5000
@@ -29,7 +30,6 @@ spec:
         persistentVolumeClaim:
           claimName: faces-archive-data-pvc
       restartPolicy: Always
-      imagePullPolicy: Always
       nodeSelector: {}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}
