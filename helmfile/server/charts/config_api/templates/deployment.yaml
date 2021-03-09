@@ -45,5 +45,6 @@ spec:
         - name: myconfig-data
           mountPath: /myconfig
       restartPolicy: Always
+      imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

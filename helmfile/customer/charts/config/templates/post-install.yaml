@@ -59,5 +59,6 @@ spec:
         volumeMounts:
         - name: keys
           mountPath: /opt/quantotto/keys
+      imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret.name | quote }}

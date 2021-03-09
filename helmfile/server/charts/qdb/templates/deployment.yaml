@@ -41,6 +41,7 @@ spec:
           mountPath: /var/lib/postgresql/data
           readOnly: false
       restartPolicy: {{ default "Always" .Values.restartPolicy | quote }}
+      imagePullPolicy: Always
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       imagePullSecrets:

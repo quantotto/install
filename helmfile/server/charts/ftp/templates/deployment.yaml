@@ -40,5 +40,6 @@ spec:
         persistentVolumeClaim:
           claimName: ftp-root-pvc
       restartPolicy: Always
+      imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

@@ -29,6 +29,7 @@ spec:
         persistentVolumeClaim:
           claimName: faces-archive-data-pvc
       restartPolicy: Always
+      imagePullPolicy: Always
       nodeSelector: {}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}

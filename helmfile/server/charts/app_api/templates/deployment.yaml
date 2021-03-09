@@ -35,5 +35,6 @@ spec:
         volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
       restartPolicy: Always
+      imagePullPolicy: Always
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret | quote }}
