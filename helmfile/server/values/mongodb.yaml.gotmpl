@@ -1,6 +1,6 @@
 auth:
   username: {{ .Values.mongodb.user }}
-  password: {{ .Values.mongodb.password }}
+  password: {{ .Values.mongodb.password | quote }}
   database: {{ .Values.mongodb.database }}
 
 persistence:
