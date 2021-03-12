@@ -1,6 +1,10 @@
 global:
   storageClass: {{ .Values.rabbitmq.volume.storageClass }}
 
+auth:
+  username: guest
+  password: guest
+
 persistence:
   enabled: false
 
