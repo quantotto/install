@@ -2,10 +2,10 @@ global:
   storageClass: {{ .Values.rabbitmq.volume.storageClass }}
 
 auth:
-  username: guest
-  password: guest
+  username: {{ .Values.rabbitmq.user }}
+  password: {{ .Values.rabbitmq.password }}
 
 persistence:
   enabled: false
 
-extraEnvVarsCM: rabbitmq_env
+extraEnvVarsCM: rabbitmq-env
