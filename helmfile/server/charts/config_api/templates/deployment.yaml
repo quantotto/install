@@ -32,6 +32,9 @@ spec:
       containers:
       - name: {{ .Values.api.name | replace "_" "-" }}
         image: "{{ .Values.image.repository }}/config_api:{{ .Values.image.tag }}"
+        securityContext:
+          capabilities:
+            add: ["SYS_PTRACE"]
         imagePullPolicy: Always
         resources:
 {{ toYaml .Values.api.resources | indent 10 }}

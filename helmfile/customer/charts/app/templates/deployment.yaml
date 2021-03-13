@@ -18,6 +18,9 @@ spec:
       containers:
       - name: {{ .Values.app.name | replace "_" "-" }}-{{ .Values.customer.id }}
         image: "{{ .Values.image.repository }}/{{ .Values.app.name }}:{{ .Values.image.tag }}"
+        securityContext:
+          capabilities:
+            add: ["SYS_PTRACE"]
         imagePullPolicy: Always
         resources: { }
         ports:

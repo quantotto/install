@@ -17,6 +17,9 @@ spec:
       containers:
       - name: ftp
         image: "{{ .Values.image.repository }}/ftp:{{ .Values.image.tag }}"
+        securityContext:
+          capabilities:
+            add: ["SYS_PTRACE"]
         imagePullPolicy: Always
         ports:
 {{ range .Values.ports }}
