@@ -42,11 +42,14 @@ def validate_config(ctx, param, value):
 def get_api_token(
     server_fqdn: str,
     mgmt_port: int,
-    client_secret: str) -> str:
+    client_id: str,
+    client_secret: str
+) -> str:
     hydra_public_url = f"https://{server_fqdn}:{mgmt_port}/hydra-public"
-    request_access_token(
+    print(f"Client secret: {client_secret}")
+    return request_access_token(
         hydra_public_url,
-        client_id="config_api_backendapp",
+        client_id=client_id,
         client_secret=client_secret,
         audience="management_api"
     )
@@ -217,12 +220,14 @@ def postinstall(ctx, target: str, config_file: Path):
         config_buf = f.read()
         config = yaml.load(config_buf, Loader=yaml.SafeLoader)
         product_config = config.get("product")
-    client_secret = getvar("HYDRA_CONFIG_CLIENT_SECRET")
+    client_id = getvar("CUSTOMER_ID")
+    client_secret = getvar("HYDRA_CUSTOMER_CLIENT_SECRET")
     token = get_api_token(
         product_config.get("server_fqdn"),
         product_config.get("management_port"),
+        client_id,
         client_secret
-    )
+    ).get("access_token")
     click.echo(f"API token: {token}")
 
 
