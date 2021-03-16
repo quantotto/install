@@ -15,6 +15,9 @@ from quantotto.cli_server.customer import customer_create as standalone_customer
 from quantotto.cli_k8s.server import server_config as k8s_server_config
 from quantotto.cli_k8s.customer import customer_config as k8s_customer_config
 
+from quantotto.cli_server.env import getvar
+from quantotto.auth.token_authenticator import request_access_token
+
 TARGETS = ("standalone", "k8s")
 
 def validate_target(ctx, param, value):
@@ -36,6 +39,17 @@ def validate_config(ctx, param, value):
         )
     return config_path
 
+def get_api_token(
+    server_fqdn: str,
+    mgmt_port: int,
+    client_secret: str) -> str:
+    hydra_public_url = f"https://{server_fqdn}:{mgmt_port}/hydra-public"
+    request_access_token(
+        hydra_public_url,
+        client_id="config_api_backendapp",
+        client_secret=client_secret,
+        audience="management_api"
+    )
 
 def install_standalone(ctx, config: Dict):
     print(f"*** Installing standalone ***")
@@ -136,7 +150,7 @@ def install_k8s(ctx, config: Dict):
         customer_id = customer_config.get("id")
         print(f"Deploying services for customer {customer_id}")
         ctx.invoke(
-            customer_config,
+            k8s_customer_config,
             customer_id=customer_id,
             customer_name=customer_config.get("name"),
             admin_email=customer_config.get("admin_email"),
@@ -172,6 +186,8 @@ def entrypoint():
               help=f"deployment config file path")
 @click.pass_context
 def install(ctx, target: str, config_file: Path):
+    """Installs Quantotto product
+    """
     with config_file.open("rb") as f:
         config_buf = f.read()
         config = yaml.load(config_buf, Loader=yaml.SafeLoader)
@@ -180,6 +196,32 @@ def install(ctx, target: str, config_file: Path):
         install_standalone(ctx, config)
     elif target == "k8s":
         install_k8s(ctx, config)
+
+
+@entrypoint.command("configure")
+@click.option("--target",
+              type=str, required=True, callback=validate_target,
+              help=f"deployment target {TARGETS}")
+@click.option("--config-file",
+              type=str, required=True, callback=validate_config,
+              help=f"deployment config file path")
+@click.pass_context
+def configure(ctx, target: str, config_file: Path):
+    """Configures installed Quantotto product leveraging
+    Management API
+    """
+    with config_file.open("rb") as f:
+        config_buf = f.read()
+        config = yaml.load(config_buf, Loader=yaml.SafeLoader)
+        product_config = config.get("product")
+    client_secret = getvar("HYDRA_CONFIG_CLIENT_SECRET")
+    token = get_api_token(
+        product_config.get("server_fqdn"),
+        product_config.get("management_port"),
+        client_secret
+    )
+    click.echo(f"API token: {token}")
+
 
 if __name__ == '__main__':
     entrypoint()
