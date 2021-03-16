@@ -30,7 +30,7 @@ popd
 PUSHD_FLAG=0
 source /etc/profile.d/quantotto.sh
 
-push auto/
+pushd auto/
 PUSHD_FLAG=1
 python auto_install.py --target $1 --config-file qconfig.yaml
 popd
