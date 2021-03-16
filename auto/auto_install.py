@@ -198,7 +198,7 @@ def install(ctx, target: str, config_file: Path):
         install_k8s(ctx, config)
 
 
-@entrypoint.command("configure")
+@entrypoint.command("postinstall")
 @click.option("--target",
               type=str, required=True, callback=validate_target,
               help=f"deployment target {TARGETS}")
@@ -206,10 +206,13 @@ def install(ctx, target: str, config_file: Path):
               type=str, required=True, callback=validate_config,
               help=f"deployment config file path")
 @click.pass_context
-def configure(ctx, target: str, config_file: Path):
-    """Configures installed Quantotto product leveraging
-    Management API
+def postinstall(ctx, target: str, config_file: Path):
+    """Configures Quantotto product post installation
+    leveraging Management API
     """
+    if target == "k8s":
+        print("k8s postinstall coming soon")
+        return
     with config_file.open("rb") as f:
         config_buf = f.read()
         config = yaml.load(config_buf, Loader=yaml.SafeLoader)

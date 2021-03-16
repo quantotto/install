@@ -19,7 +19,14 @@ function onerror() {
 trap onerror ERR
 
 if [ -z $1 ]; then
-    echo "Usage $0 <target: k8s or standalone>"
+    echo "No target specified"
+    echo "Usage $0 <target: k8s or standalone> <config file>"
+    exit 1
+fi
+
+if [ -z $2 ]; then
+    echo "No config file specified"
+    echo "Usage $0 <target: k8s or standalone> <config file>"
     exit 1
 fi
 
@@ -32,8 +39,8 @@ source /etc/profile.d/quantotto.sh
 
 pushd auto/
 PUSHD_FLAG=1
-python auto_install.py install --target $1 --config-file qconfig.yaml
-python auto_install.py configure --target $1 --config-file qconfig.yaml
+python auto_install.py install --target $1 --config-file $2
+python auto_install.py postinstall --target $1 --config-file $2
 popd
 PUSHD_FLAG=0
 

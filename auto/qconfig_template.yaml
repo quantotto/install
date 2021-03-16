@@ -9,6 +9,12 @@ product:
   retention_days: 3
   server_password: ""
 
+k8s:
+  cluster_domain: example.com
+  namespace: quantotto
+  storage_class: my-local-storage
+  encrypt_secrets: "pgp:753CAD4D4B26B9C4C4A043C8CBECFF86FD2D91FC"
+
 customers:
   - id: qto
     name: Quantotto
@@ -18,10 +24,6 @@ customers:
     admin_mname: ""
     admin_lname: Totto
     admin_password: "quantott0"
-
-k8s:
-  cluster_domain: example.com
-  namespace: quantotto
-  storage_class: my-local-storage
-  encrypt_secrets: "pgp:753CAD4D4B26B9C4C4A043C8CBECFF86FD2D91FC"
-
+    post_install:
+      site: ""
+      scenario_flow: ""
