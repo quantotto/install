@@ -32,7 +32,7 @@ source /etc/profile.d/quantotto.sh
 
 pushd auto/
 PUSHD_FLAG=1
-python auto_install.py --target $1 --config-file qconfig.yaml
+python auto_install.py install --target $1 --config-file qconfig.yaml
 popd
 PUSHD_FLAG=0
 
