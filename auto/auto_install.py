@@ -89,27 +89,24 @@ def install_k8s(ctx, config: Dict):
     print(f"Installing k8s")
     product_config = config.get("product")
     k8s_config = config.get("k8s")
-    srv_password = "quantott0"
-    sys.argv = [
-        sys.argv[0],
-        "server",
-        "config",
-        "--quantotto-version", product_config.get("quantotto_version"),
-        "--server-fqdn", product_config.get("server_fqdn"),
-        "--cluster-domain", k8s_config.get("cluster_domain"),
-        "--server=namespace", k8s_config.get("namespace"),
-        "--customer-namespace-prefix", k8s_config.get("namespace") + "-",
-        "--repo", "quantotto",
-        "--repo-user", "quantotto",
-        "--repo-password", k8s_config.get("repo_password", ""),
-        "--storage-class", k8s_config.get("storage_class"),
-        "--retention-days", product_config.get("retention_days"),
-        "--qdb-password", srv_password,
-        "--mongodb-password", srv_password,
-        "--ldap-admin-password", srv_password,
-        "--encrypt-secrets", k8s_config.get("encrypt_secrets")
-    ]
-    k8s_entrypoint()
+    srv_password = product_config.get("server_password", "quantott0")
+    ctx.invoke(
+        k8s_server_config,
+        quantotto_version=product_config.get("quantotto_version"),
+        server_fqdn=product_config.get("server_fqdn"),
+        cluster_domain=k8s_config.get("cluster_domain"),
+        server_namespace=k8s_config.get("namespace"),
+        customer_namespace_prefix=k8s_config.get("namespace") + "-",
+        repo="quantotto",
+        repo_user="quantotto",
+        repo_password=k8s_config.get("repo_password", ""),
+        storage_class=k8s_config.get("storage_class"),
+        retention_days=product_config.get("retention_days"),
+        qdb_password=srv_password,
+        mongodb_password=srv_password,
+        ldap_admin_password=srv_password,
+        encrypt_secrets=k8s_config.get("encrypt_secrets")
+    )
     helmfile_args = [
         "helmfile", "-f",
         "/opt/quantotto/install/helmfile/server_helmfile.yaml", "sync"
@@ -138,21 +135,18 @@ def install_k8s(ctx, config: Dict):
     for customer_config in config.get("customers"):
         customer_id = customer_config.get("id")
         print(f"Deploying services for customer {customer_id}")
-        sys.argv = [
-            sys.argv[0],
-            "customer",
-            "config",
-            "--customer-id", customer_id,
-            "--customer-name", customer_config.get("name"),
-            "--admin-email", customer_config.get("admin_email"),
-            "--admin-login", customer_config.get("admin_login"),
-            "--admin-first-name", customer_config.get("admin_fname"),
-            "--admin-middle-name", customer_config.get("admin_mname"),
-            "--admin-last-name", customer_config.get("admin_lname"),
-            "--admin-password", customer_config.get("admin_password"),
-            "--super-admin-secret", super_admin_secret
-        ]
-        k8s_entrypoint()
+        ctx.invoke(
+            customer_config,
+            customer_id=customer_id,
+            customer_name=customer_config.get("name"),
+            admin_email=customer_config.get("admin_email"),
+            admin_login=customer_config.get("admin_login"),
+            admin_first_name=customer_config.get("admin_fname"),
+            admin_middle_name=customer_config.get("admin_mname"),
+            admin_last_name=customer_config.get("admin_lname"),
+            admin_password=customer_config.get("admin_password"),
+            super_admin_secret=super_admin_secret
+        )
         helmfile_args = [
             "helmfile", "-f",
             f"/opt/quantotto/install/helmfile/{customer_id}_customer_helmfile.yaml", "sync"
