@@ -7,8 +7,13 @@ import subprocess
 import base64
 from pathlib import Path
 
-from quantotto.cli_server.entrypoint import entrypoint as standalone_entrypoint
-from quantotto.cli_k8s.entrypoint import entrypoint as k8s_entrypoint
+from quantotto.cli_server.product import (
+    product_config as standalone_product_config,
+    product_deploy as standalone_product_deploy
+)
+from quantotto.cli_server.customer import customer_create as standalone_customer_create
+from quantotto.cli_k8s.server import server_config as k8s_server_config
+from quantotto.cli_k8s.customer import customer_config as k8s_customer_config
 
 TARGETS = ("standalone", "k8s")
 
@@ -32,66 +37,55 @@ def validate_config(ctx, param, value):
     return config_path
 
 
-def install_standalone(config: Dict):
+def install_standalone(ctx, config: Dict):
     print(f"*** Installing standalone ***")
     product_config = config.get("product")
     srv_password = "quantott0"
-    sys.argv = [
-        sys.argv[0],
-        "product",
-        "config",
-        "--quantotto-version", product_config.get("quantotto_version"),
-        "--server-fqdn", product_config.get("server_fqdn"),
-        "--server-ip", product_config.get("server_ip"),
-        "--management-port", product_config.get("management_port"),
-        "--frames-port", product_config.get("frames_port"),
-        "--internal-host-subnet", product_config.get("internal_host_subnet"),
-        "--docker-subnet", product_config.get("docker_subnet"),
-        "--retention-days", product_config.get("retention_days"),
-        "--data-volume", product_config.get("data_volume", "/opt/quantotto/data"),
-        "--qdb-host", "qdb",
-        "--qdb-user", "quantotto",
-        "--qdb-password", srv_password,
-        "--influxdb-host", "influxdb",
-        "--influxdb-user", "quantotto",
-        "--influxdb-password", srv_password,
-        "--mongodb-host", "mongodb",
-        "--mongodb-user", "quantotto",
-        "--mongodb-password", srv_password,
-        "--ldap-uri", "ldap://openldap:389",
-        "--ldap-admin-password", srv_password
-    ]
-    standalone_entrypoint()
+    ctx.invoke(
+        standalone_product_config,
+        quantotto_version=product_config.get("quantotto_version"),
+        server_fqdn=product_config.get("server_fqdn"),
+        server_ip=product_config.get("server_ip"),
+        management_port=product_config.get("management_port"),
+        frames_port=product_config.get("frames_port"),
+        internal_host_subnet=product_config.get("internal_host_subnet"),
+        docker_subnet=product_config.get("docker_subnet"),
+        retention_days=product_config.get("retention_days"),
+        data_volume=product_config.get("data_volume", "/opt/quantotto/data"),
+        qdb_host="qdb",
+        qdb_user="quantotto",
+        qdb_password=srv_password,
+        influxdb_host="influxdb",
+        influxdb_user="quantotto",
+        influxdb_password=srv_password,
+        mongodb_host="mongodb",
+        mongodb_user="quantotto",
+        mongodb_password=srv_password,
+        ldap_uri="ldap://openldap:389",
+        ldap_admin_password=srv_password
+    )
 
     print(f"*** Running deploy command ***")
-    sys.argv[
-        sys.argv[0],
-        "product",
-        "deploy"
-    ]
-    standalone_entrypoint()
+    ctx.invoke(standalone_product_deploy)
 
     print("*** creating customer ***")
     customer_config = config.get("customers")[0]
     with open("super.txt", "r") as f:
         superadmin_secret = f.read().lstrip().rstrip()
-    sys.argv[
-        sys.argv[0],
-        "customer",
-        "create",
-        "--customer-id", customer_config.get("id"),
-        "--customer-name", customer_config.get("name"),
-        "--admin-email", customer_config.get("admin_email"),
-        "--admin-login", customer_config.get("admin_login"),
-        "--admin-first-name", customer_config.get("admin_fname"),
-        "--admin-middle-name", customer_config.get("admin_mname"),
-        "--admin-last-name", customer_config.get("admin_lname"),
-        "--admin-password", customer_config.get("admin_password"),
-        "--superadmin-secret", superadmin_secret
-    ]
-    standalone_entrypoint()
+    ctx.invoke(
+        standalone_customer_create,
+        customer_id=customer_config.get("id"),
+        customer_name=customer_config.get("name"),
+        admin_email=customer_config.get("admin_email"),
+        admin_login=customer_config.get("admin_login"),
+        admin_first_name=customer_config.get("admin_fname"),
+        admin_middle_name=customer_config.get("admin_mname"),
+        admin_last_name=customer_config.get("admin_lname"),
+        admin_password=customer_config.get("admin_password"),
+        superadmin_secret=superadmin_secret
+    )
 
-def install_k8s(config: Dict):
+def install_k8s(ctx, config: Dict):
     print(f"Installing k8s")
     product_config = config.get("product")
     k8s_config = config.get("k8s")
@@ -182,15 +176,16 @@ def entrypoint():
 @click.option("--config-file",
               type=str, required=True, callback=validate_config,
               help=f"deployment config file path")
-def install(target: str, config_file: Path):
+@click.pass_context
+def install(ctx, target: str, config_file: Path):
     with config_file.open("rb") as f:
         config_buf = f.read()
         config = yaml.load(config_buf, Loader=yaml.SafeLoader)
     pprint.pprint(config)
     if target == "standalone":
-        install_standalone(config)
+        install_standalone(ctx, config)
     elif target == "k8s":
-        install_k8s(config)
+        install_k8s(ctx, config)
 
 if __name__ == '__main__':
     entrypoint()
