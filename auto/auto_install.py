@@ -33,7 +33,7 @@ def validate_config(ctx, param, value):
 
 
 def install_standalone(config: Dict):
-    print(f"Installing standalone")
+    print(f"*** Installing standalone ***")
     product_config = config.get("product")
     srv_password = "quantott0"
     sys.argv = [
@@ -62,12 +62,16 @@ def install_standalone(config: Dict):
         "--ldap-admin-password", srv_password
     ]
     standalone_entrypoint()
+
+    print(f"*** Running deploy command ***")
     sys.argv[
         sys.argv[0],
         "product",
         "deploy"
     ]
     standalone_entrypoint()
+
+    print("*** creating customer ***")
     customer_config = config.get("customers")[0]
     with open("super.txt", "r") as f:
         superadmin_secret = f.read().lstrip().rstrip()
