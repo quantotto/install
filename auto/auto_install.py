@@ -2,9 +2,9 @@ from typing import Dict
 import click
 import yaml
 import pprint
-import sys
 import subprocess
 import base64
+from dotted_dict import DottedDict
 from pathlib import Path
 
 from quantotto.cli_server.product import (
@@ -17,8 +17,24 @@ from quantotto.cli_k8s.customer import customer_config as k8s_customer_config
 
 from quantotto.cli_server.env import getvar
 from quantotto.auth.token_authenticator import request_access_token
+from quantotto.mgmt_py_sdk.swagger_client import (
+    Configuration,
+    ApiClient,
+    SiteApi,
+    ClassifierApi,
+    ScenarioApi,
+    Site,
+    Classifier,
+    ScenarioFlow,
+    ScenarioGroup,
+    Graph,
+    Node,
+    Connection,
+)
 
-TARGETS = ("standalone", "k8s")
+STANDALONE = "standalone"
+K8S = "k8s"
+TARGETS = (STANDALONE, K8S)
 SUPER_TXT = "super.txt"
 
 def validate_target(ctx, param, value):
@@ -55,20 +71,20 @@ def get_api_token(
         audience="management_api"
     )
 
-def install_standalone(ctx, config: Dict):
+def install_standalone(ctx, config: DottedDict):
     print(f"*** Installing standalone ***")
-    product_config = config.get("product")
+    product_config = config.product
     srv_password = "quantott0"
     ctx.invoke(
         standalone_product_config,
-        quantotto_version=product_config.get("quantotto_version"),
-        server_fqdn=product_config.get("server_fqdn"),
-        server_ip=product_config.get("server_ip"),
-        management_port=product_config.get("management_port"),
-        frames_port=product_config.get("frames_port"),
-        internal_host_subnet=product_config.get("internal_host_subnet"),
-        docker_subnet=product_config.get("docker_subnet"),
-        retention_days=product_config.get("retention_days"),
+        quantotto_version=product_config.quantotto_version,
+        server_fqdn=product_config.server_fqdn,
+        server_ip=product_config.server_ip,
+        management_port=product_config.management_port,
+        frames_port=product_config.frames_port,
+        internal_host_subnet=product_config.internal_host_subnet,
+        docker_subnet=product_config.docker_subnet,
+        retention_days=product_config.retention_days,
         data_volume=product_config.get("data_volume", "/opt/quantotto/data"),
         qdb_host="qdb",
         qdb_user="quantotto",
@@ -87,43 +103,43 @@ def install_standalone(ctx, config: Dict):
     ctx.invoke(standalone_product_deploy)
 
     print("*** creating customer ***")
-    customer_config = config.get("customers")[0]
+    customer_config = config.customers[0]
     with open(SUPER_TXT, "r") as f:
         superadmin_secret = f.read().lstrip().rstrip()
     ctx.invoke(
         standalone_customer_create,
-        customer_id=customer_config.get("id"),
-        customer_name=customer_config.get("name"),
-        admin_email=customer_config.get("admin_email"),
-        admin_login=customer_config.get("admin_login"),
-        admin_first_name=customer_config.get("admin_fname"),
-        admin_middle_name=customer_config.get("admin_mname"),
-        admin_last_name=customer_config.get("admin_lname"),
-        admin_password=customer_config.get("admin_password"),
+        customer_id=customer_config.id,
+        customer_name=customer_config.name,
+        admin_email=customer_config.admin_email,
+        admin_login=customer_config.admin_login,
+        admin_first_name=customer_config.admin_fname,
+        admin_middle_name=customer_config.admin_mname,
+        admin_last_name=customer_config.admin_lname,
+        admin_password=customer_config.admin_password,
         superadmin_secret=superadmin_secret
     )
 
-def install_k8s(ctx, config: Dict):
+def install_k8s(ctx, config: DottedDict):
     print(f"Installing k8s")
-    product_config = config.get("product")
-    k8s_config = config.get("k8s")
+    product_config = config.product
+    k8s_config = config.k8s
     srv_password = product_config.get("server_password", "quantott0")
     ctx.invoke(
         k8s_server_config,
-        quantotto_version=product_config.get("quantotto_version"),
-        portal_fqdn=product_config.get("server_fqdn"),
-        cluster_domain=k8s_config.get("cluster_domain"),
-        server_namespace=k8s_config.get("namespace"),
-        customer_namespace_prefix=k8s_config.get("namespace") + "-",
+        quantotto_version=product_config.quantotto_version,
+        portal_fqdn=product_config.server_fqdn,
+        cluster_domain=k8s_config.cluster_domain,
+        server_namespace=k8s_config.namespace,
+        customer_namespace_prefix=k8s_config.namespace + "-",
         repo="quantotto",
         repo_user="quantotto",
-        repo_password=k8s_config.get("repo_password", ""),
-        storage_class=k8s_config.get("storage_class"),
-        retention_days=product_config.get("retention_days"),
+        repo_password=k8s_config.repo_password,
+        storage_class=k8s_config.storage_class,
+        retention_days=product_config.retention_days,
         qdb_password=srv_password,
         mongodb_password=srv_password,
         ldap_admin_password=srv_password,
-        encrypt_secrets=k8s_config.get("encrypt_secrets")
+        encrypt_secrets=k8s_config.encrypt_secrets
     )
     helmfile_args = [
         "helmfile", "-f",
@@ -137,7 +153,7 @@ def install_k8s(ctx, config: Dict):
     kubectl_args = [
         "kubectl", "get",
         "secrets/config-super-admin",
-        "-n", k8s_config.get("namespace"),
+        "-n", k8s_config.namespace,
         "--template={{.data.HYDRA_SUPER_ADMIN_SECRET}}"
     ]
     p = subprocess.Popen(
@@ -150,19 +166,19 @@ def install_k8s(ctx, config: Dict):
     super_admin_secret = base64.b64decode(stdout_data).decode()
     with open(SUPER_TXT, "w") as f:
         f.write(super_admin_secret)
-    for customer_config in config.get("customers"):
-        customer_id = customer_config.get("id")
+    for customer_config in config.customers:
+        customer_id = customer_config.id
         print(f"Deploying services for customer {customer_id}")
         ctx.invoke(
             k8s_customer_config,
             customer_id=customer_id,
-            customer_name=customer_config.get("name"),
-            admin_email=customer_config.get("admin_email"),
-            admin_login=customer_config.get("admin_login"),
-            admin_first_name=customer_config.get("admin_fname"),
-            admin_middle_name=customer_config.get("admin_mname"),
-            admin_last_name=customer_config.get("admin_lname"),
-            admin_password=customer_config.get("admin_password"),
+            customer_name=customer_config.name,
+            admin_email=customer_config.admin_email,
+            admin_login=customer_config.admin_login,
+            admin_first_name=customer_config.admin_fname,
+            admin_middle_name=customer_config.admin_mname,
+            admin_last_name=customer_config.admin_lname,
+            admin_password=customer_config.admin_password,
             super_admin_secret=super_admin_secret
         )
         helmfile_args = [
@@ -174,6 +190,38 @@ def install_k8s(ctx, config: Dict):
             print(
                 f"helmfile failed to deploy customer {customer_id}"
             )
+
+
+def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
+    cfg_args = [
+        "/opt/quantotto/agent_cfg.sh",
+        customer_id,
+        k8s_config.namespaces
+    ]
+    p = subprocess.run(cfg_args)
+    if p.returncode:
+        raise Exception(f"failed to set environment for customer {customer_id}")
+
+def create_objects(customer: DottedDict, product_config: DottedDict):
+    client_id = getvar("CUSTOMER_ID")
+    client_secret = getvar("HYDRA_CUSTOMER_CLIENT_SECRET")
+    portal_fqdn = product_config.server_fqdn
+    mgmt_port = product_config.management_port
+    token = get_api_token(
+        portal_fqdn,
+        mgmt_port,
+        client_id,
+        client_secret
+    ).get("access_token")
+    click.echo(f"API token: {token}")
+    config = Configuration()
+    config.access_token = token
+    config.host = f"https://{portal_fqdn}:{mgmt_port}/api/v1"
+    api_client = ApiClient(config)
+    if customer.site:
+        site_api = SiteApi(api_client)
+        my_site = Site(site_name=customer.site)
+        site_api.add_site(my_site)
 
 
 @click.group()
@@ -194,7 +242,7 @@ def install(ctx, target: str, config_file: Path):
     """
     with config_file.open("rb") as f:
         config_buf = f.read()
-        config = yaml.load(config_buf, Loader=yaml.SafeLoader)
+        config = DottedDict(yaml.load(config_buf, Loader=yaml.SafeLoader))
     pprint.pprint(config)
     if target == "standalone":
         install_standalone(ctx, config)
@@ -214,22 +262,23 @@ def postinstall(ctx, target: str, config_file: Path):
     """Configures Quantotto product post installation
     leveraging Management API
     """
-    if target == "k8s":
-        print("k8s postinstall coming soon")
-        return
+    k8s_config = {}
     with config_file.open("rb") as f:
         config_buf = f.read()
-        config = yaml.load(config_buf, Loader=yaml.SafeLoader)
-        product_config = config.get("product")
-    client_id = getvar("CUSTOMER_ID")
-    client_secret = getvar("HYDRA_CUSTOMER_CLIENT_SECRET")
-    token = get_api_token(
-        product_config.get("server_fqdn"),
-        product_config.get("management_port"),
-        client_id,
-        client_secret
-    ).get("access_token")
-    click.echo(f"API token: {token}")
+        config = DottedDict(yaml.load(config_buf, Loader=yaml.SafeLoader))
+        product_config = config.product
+        if target == K8S:
+            k8s_config = config.k8s
+    if target == STANDALONE:
+        customers = product_config.customers[0:1]
+    else:
+        customers = product_config.customers
+    for c in customers:
+        if target == K8S:
+            prep_k8s_customer_env(c.id, k8s_config)
+        create_objects(
+            c, product_config
+        )
 
 
 if __name__ == '__main__':
