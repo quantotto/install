@@ -42,7 +42,7 @@ source /etc/profile.d/quantotto.sh
 pushd auto/
 PUSHD_FLAG=1
 python auto_install.py install --target $1 --config-file $2.yaml
-python auto_install.py postinstall --target $1 --config-file $2.yaml
+REQUESTS_CA_BUNDLE=$QUANTOTTO_CA_CERT python auto_install.py postinstall --target $1 --config-file $2.yaml
 popd
 PUSHD_FLAG=0
 
