@@ -63,7 +63,7 @@ def get_api_token(
     client_secret: str
 ) -> str:
     hydra_public_url = f"https://{server_fqdn}:{mgmt_port}/hydra-public"
-    print(f"Client secret: {client_secret}")
+    click.echo(f"Client secret: {client_secret}")
     return request_access_token(
         hydra_public_url,
         client_id=client_id,
@@ -72,7 +72,7 @@ def get_api_token(
     )
 
 def install_standalone(ctx, config: DottedDict):
-    print(f"*** Installing standalone ***")
+    click.echo(f"*** Installing standalone ***")
     product_config = config.product
     srv_password = "quantott0"
     ctx.invoke(
@@ -99,10 +99,10 @@ def install_standalone(ctx, config: DottedDict):
         ldap_admin_password=srv_password
     )
 
-    print(f"*** Running deploy command ***")
+    click.echo(f"*** Running deploy command ***")
     ctx.invoke(standalone_product_deploy)
 
-    print("*** creating customer ***")
+    click.echo("*** creating customer ***")
     customer_config = config.customers[0]
     with open(SUPER_TXT, "r") as f:
         superadmin_secret = f.read().lstrip().rstrip()
@@ -120,7 +120,7 @@ def install_standalone(ctx, config: DottedDict):
     )
 
 def install_k8s(ctx, config: DottedDict):
-    print(f"Installing k8s")
+    click.echo(f"Installing k8s")
     product_config = config.product
     k8s_config = config.k8s
     srv_password = product_config.get("server_password", "quantott0")
@@ -172,7 +172,7 @@ def install_k8s(ctx, config: DottedDict):
         f.write(super_admin_secret)
     for customer_config in config.customers:
         customer_id = customer_config.id
-        print(f"Deploying services for customer {customer_id}")
+        click.echo(f"Deploying services for customer {customer_id}")
         ctx.invoke(
             k8s_customer_config,
             customer_id=customer_id,
@@ -194,7 +194,7 @@ def install_k8s(ctx, config: DottedDict):
             raise Exception(
                 f"helmfile failed to deploy customer {customer_id}"
             )
-        print("helmfile done for customer")
+        click.echo("helmfile done for customer")
 
 
 def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
