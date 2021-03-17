@@ -4,6 +4,7 @@ import yaml
 import pprint
 import subprocess
 import base64
+import time
 from dotted_dict import DottedDict
 from pathlib import Path
 
@@ -170,6 +171,8 @@ def install_k8s(ctx, config: DottedDict):
     super_admin_secret = base64.b64decode(stdout_data).decode()
     with open(SUPER_TXT, "w") as f:
         f.write(super_admin_secret)
+    click.echo("Server deployed")
+    time.sleep(10.0)
     for customer_config in config.customers:
         customer_id = customer_config.id
         click.echo(f"Deploying services for customer {customer_id}")
