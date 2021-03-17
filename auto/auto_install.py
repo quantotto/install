@@ -219,9 +219,15 @@ def create_objects(customer: DottedDict, product_config: DottedDict):
     config.host = f"https://{portal_fqdn}:{mgmt_port}/api/v1"
     api_client = ApiClient(config)
     if customer.site:
-        site_api = SiteApi(api_client)
-        my_site = Site(site_name=customer.site)
-        site_api.add_site(my_site)
+        click.echo(f"Creating {customer.site} site... ", nl=False)
+        try:
+            site_api = SiteApi(api_client)
+            my_site = Site(site_name=customer.site)
+            site_api.add_site(my_site)
+            click.echo("Done")
+        except Exception as e:
+            click.echo("Error")
+            click.echo(f"Exception adding site: {str(e)}")
 
 
 @click.group()
