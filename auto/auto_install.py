@@ -19,6 +19,7 @@ from quantotto.cli_server.env import getvar
 from quantotto.auth.token_authenticator import request_access_token
 
 TARGETS = ("standalone", "k8s")
+SUPER_TXT = "super.txt"
 
 def validate_target(ctx, param, value):
     if not value:
@@ -87,7 +88,7 @@ def install_standalone(ctx, config: Dict):
 
     print("*** creating customer ***")
     customer_config = config.get("customers")[0]
-    with open("super.txt", "r") as f:
+    with open(SUPER_TXT, "r") as f:
         superadmin_secret = f.read().lstrip().rstrip()
     ctx.invoke(
         standalone_customer_create,
@@ -146,8 +147,8 @@ def install_k8s(ctx, config: Dict):
         stderr=subprocess.PIPE
     )
     stdout_data, _ = p.communicate(b"")
-    super_admin_secret = base64.b64decode(stdout_data)
-    with open("super.txt", "w") as f:
+    super_admin_secret = base64.b64decode(stdout_data).decode()
+    with open(SUPER_TXT, "w") as f:
         f.write(super_admin_secret)
     for customer_config in config.get("customers"):
         customer_id = customer_config.get("id")
