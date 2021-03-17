@@ -163,6 +163,10 @@ def install_k8s(ctx, config: DottedDict):
         stderr=subprocess.PIPE
     )
     stdout_data, _ = p.communicate(b"")
+    if p.returncode != 0:
+        raise Exception(
+            f"kubectl failed {kubectl_args}"
+        )
     super_admin_secret = base64.b64decode(stdout_data).decode()
     with open(SUPER_TXT, "w") as f:
         f.write(super_admin_secret)
@@ -187,9 +191,10 @@ def install_k8s(ctx, config: DottedDict):
         ]
         p = subprocess.run(helmfile_args)
         if p.returncode:
-            print(
+            raise Exception(
                 f"helmfile failed to deploy customer {customer_id}"
             )
+        print("helmfile done for customer")
 
 
 def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
