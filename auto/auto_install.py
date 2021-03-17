@@ -278,9 +278,9 @@ def postinstall(ctx, target: str, config_file: Path):
         if target == K8S:
             k8s_config = config.k8s
     if target == STANDALONE:
-        customers = product_config.customers[0:1]
+        customers = config.customers[0:1]
     else:
-        customers = product_config.customers
+        customers = config.customers
     for c in customers:
         if target == K8S:
             prep_k8s_customer_env(c.id, k8s_config)
