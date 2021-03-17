@@ -24,6 +24,6 @@ customers:
     admin_mname: ""
     admin_lname: Totto
     admin_password: "quantott0"
-    post_install:
+    postinstall:
       site: ""
       scenario_flow: ""
