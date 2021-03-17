@@ -110,7 +110,7 @@ def install_k8s(ctx, config: Dict):
     ctx.invoke(
         k8s_server_config,
         quantotto_version=product_config.get("quantotto_version"),
-        server_fqdn=product_config.get("server_fqdn"),
+        portal_fqdn=product_config.get("server_fqdn"),
         cluster_domain=k8s_config.get("cluster_domain"),
         server_namespace=k8s_config.get("namespace"),
         customer_namespace_prefix=k8s_config.get("namespace") + "-",
