@@ -30,11 +30,13 @@ if [ -z $2 ]; then
     exit 1
 fi
 
-pushd server/
-PUSHD_FLAG=1
-./install_server.sh
-popd
-PUSHD_FLAG=0
+if [ ! -e /opt/quantotto/.venv ] || [ ! -e /etc/profile.d/quantotto.sh ]; then
+    pushd server/
+    PUSHD_FLAG=1
+    ./install_server.sh
+    popd
+    PUSHD_FLAG=0
+fi
 source /etc/profile.d/quantotto.sh
 
 pushd auto/

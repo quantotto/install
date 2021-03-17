@@ -48,6 +48,9 @@ sudo chmod -R 775 ${APP_FOLDER}
 echo "Done"
 
 echo -n "Creating Python3 virtual environment under ${APP_FOLDER}/.venv... "
+if [ -e ${APP_FOLDER}/.venv ]; then
+    rm -rf ${APP_FOLDER}/.venv
+fi
 python3 -m venv ${APP_FOLDER}/.venv
 echo "Done"
 
