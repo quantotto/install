@@ -4,6 +4,7 @@ import yaml
 import pprint
 import subprocess
 import base64
+import time
 import sys
 from dotted_dict import DottedDict
 from pathlib import Path
@@ -206,8 +207,7 @@ def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
         k8s_config.namespace
     ]
     p = subprocess.run(cfg_args)
-    if p.returncode:
-        raise Exception(f"failed to set environment for customer {customer_id}")
+    p.check_returncode()
 
 def create_objects(customer: DottedDict, product_config: DottedDict):
     client_id = getvar("CUSTOMER_ID")
@@ -237,6 +237,7 @@ def create_objects(customer: DottedDict, product_config: DottedDict):
         except Exception as e:
             click.echo("Error")
             click.echo(f"Exception adding site {site_name}: {str(e)}")
+    time.sleep(1.0)
     sys.stdout.flush()
 
 
