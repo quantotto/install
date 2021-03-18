@@ -105,7 +105,7 @@ else
     mkdir -p $QUANTOTTO_HOME/certs
     kubectl get secret/certs -n quantotto -o 'go-template={{index .data "tls.crt"}}' | base64 --decode > $QUANTOTTO_HOME/certs/quantotto.crt
     QUANTOTTO_CA_CERT=$QUANTOTTO_HOME/certs/quantotto.crt
-    sed '/${SERVER_FQDN}/d' /etc/hosts | sed '1i${SERVER_IP}\t${SERVER_FQDN}' | sudo tee /etc/hosts >/dev/null
+    sed "/${SERVER_FQDN}/d" /etc/hosts | sed "1i${SERVER_IP}\t${SERVER_FQDN}" | sudo tee /etc/hosts >/dev/null
 fi
 EOF
 
