@@ -203,7 +203,7 @@ def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
     cfg_args = [
         "/opt/quantotto/agent_cfg.sh",
         customer_id,
-        k8s_config.namespaces
+        k8s_config.namespace
     ]
     p = subprocess.run(cfg_args)
     if p.returncode:
