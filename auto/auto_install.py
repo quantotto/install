@@ -198,6 +198,7 @@ def install_k8s(ctx, config: DottedDict):
                 f"helmfile failed to deploy customer {customer_id}"
             )
         click.echo("helmfile done for customer")
+        time.sleep(1.0)
 
 
 def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
@@ -238,8 +239,6 @@ def create_objects(customer: DottedDict, product_config: DottedDict):
             click.echo("Error")
             click.echo(f"Exception adding site {site_name}: {str(e)}")
     time.sleep(1.0)
-    sys.stdout.flush()
-
 
 @click.group()
 def entrypoint():

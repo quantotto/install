@@ -94,15 +94,18 @@ sudo tee -a ${APP_FOLDER}/agent_cfg.sh >/dev/null <<'EOF'
 if [ -z $1 ] || [ -z $2 ]; then
     echo "Usage: source $QUANTOTTO_HOME/agent_cfg.sh <customer ID> <server namespace>"
 else
+    SERVER_FQDN=$(kubectl get configmap/api-common -n $2 --template={{.data.PORTAL_FQDN}})
+    SERVER_IP=$(kubectl get service nginx -n $2 | grep nginx | awk '{ printf($4); }')
     echo "CUSTOMER_ID=$1" > $QUANTOTTO_HOME/.env
     echo "FRAMES_PORT=15000" >> $QUANTOTTO_HOME/.env
     echo "HYDRA_CUSTOMER_CLIENT_SECRET=$(kubectl get secret/customer-secret-$1 -n $2 --template={{.data.HYDRA_CLIENT_SECRET}} | base64 --decode)" >> $QUANTOTTO_HOME/.env
-    echo "SERVER_IP=$(kubectl get service nginx -n $2 | grep nginx | awk '{ printf($4); }')" >> $QUANTOTTO_HOME/.env
-    echo "SERVER_FQDN=$(kubectl get configmap/api-common -n $2 --template={{.data.PORTAL_FQDN}})" >> $QUANTOTTO_HOME/.env
+    echo "SERVER_FQDN=${SERVER_FQDN}" >> $QUANTOTTO_HOME/.env
+    echo "SERVER_IP=${SERVER_IP}" >> $QUANTOTTO_HOME/.env
 
     mkdir -p $QUANTOTTO_HOME/certs
     kubectl get secret/certs -n quantotto -o 'go-template={{index .data "tls.crt"}}' | base64 --decode > $QUANTOTTO_HOME/certs/quantotto.crt
     QUANTOTTO_CA_CERT=$QUANTOTTO_HOME/certs/quantotto.crt
+    sed '/${SERVER_FQDN}/d' /etc/hosts | sed '1i${SERVER_IP}\t${SERVER_FQDN}' | sudo tee /etc/hosts >/dev/null
 fi
 EOF
 
