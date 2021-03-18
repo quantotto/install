@@ -173,6 +173,7 @@ def install_k8s(ctx, config: DottedDict):
     with open(SUPER_TXT, "w") as f:
         f.write(super_admin_secret)
     click.echo("Server deployed")
+    time.sleep(10.0)
     for customer_config in config.customers:
         customer_id = customer_config.id
         click.echo(f"Deploying services for customer {customer_id}")
