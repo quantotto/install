@@ -4,7 +4,7 @@ import yaml
 import pprint
 import subprocess
 import base64
-import time
+import sys
 from dotted_dict import DottedDict
 from pathlib import Path
 
@@ -237,6 +237,7 @@ def create_objects(customer: DottedDict, product_config: DottedDict):
         except Exception as e:
             click.echo("Error")
             click.echo(f"Exception adding site {site_name}: {str(e)}")
+    sys.stdout.flush()
 
 
 @click.group()
