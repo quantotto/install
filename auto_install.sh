@@ -38,6 +38,9 @@ if [ ! -e /opt/quantotto/.venv ] || [ ! -e /etc/profile.d/quantotto.sh ]; then
     PUSHD_FLAG=0
 fi
 source /etc/profile.d/quantotto.sh
+if [ "$1" == "k8s" ]; then
+    QUANTOTTO_CA_CERT=/opt/quantotto/certs/quantotto.crt
+fi
 
 pushd auto/
 PUSHD_FLAG=1
