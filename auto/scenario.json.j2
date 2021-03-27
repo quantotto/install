@@ -1,0 +1,125 @@
+{
+    "nodes": [
+        {% for s in streams %}
+        {
+            "id_": "s{{ loop.index }}",
+            "name_": "{{ s.name }}",
+            "type_": "stream",
+            "fill": "blue",
+            "flow_id": {{ flow_id }},
+            "data": {
+                "group_id": {{ group_id }},
+                "customer_id": "{{ customer_id }}",
+                "params": [
+                    {
+                        "param_type": "list",
+                        "param_name": "device_uris",
+                        "param_value": "[{% for d in s.device_uris %} \"{{ d }}\"{% if loop.index < loop.length %},{% endif %}{% endfor %}]"
+                    }
+                ]
+            }
+        },
+        {% endfor %}
+        {% for c in classifiers %}
+        {
+            "id_": "c{{ loop.index }}",
+            "name_": "{{ c.name }}",
+            "type_": "classifier",
+            "fill": "purple",
+            "flow_id": {{ flow_id }},
+            "data": {
+                "group_id": {{ group_id }},
+                "customer_id": "{{ customer_id }}",
+                "classifier_id": {{ c.id }},
+                "plugin_id": {{ c.plugin_id }},
+                "params": [
+                    {% for p in c.params %}
+                    {
+                        "param_type": "{{ p.param_type }}",
+                        "param_name": "{{ p.param_name }}",
+                        "param_value": "{{ p.param_value }}"
+                    }{% if loop.index < loop.length %},{% endif %}
+                    {% endfor %}
+                ]
+            }
+        },
+        {% endfor %}
+        {% for t in triggers %}
+        {
+            "id_": "t{{ loop.index }}",
+            "name_": "{{ t.name }}",
+            "type_": "trigger",
+            "fill": "darkgray",
+            "flow_id": {{ t.flow_id }},
+            "data": {
+                "group_id": {{ group_id }},
+                "customer_id": "{{ customer_id }}",
+                "plugin_id": {{ t.plugin_id }},
+                "params": [
+                    {% for p in t.params %}
+                    {
+                        "param_type": "{{ p.param_type }}",
+                        "param_name": "{{ p.param_name }}",
+                        "param_value": "{{ p.param_value }}"
+                    }{% if loop.index < loop.length %},{% endif %}
+                    {% endfor %}
+                ]
+            }
+        },
+        {% endfor %}
+        {% for a in actions %}
+        {
+            "id_": "a{{ loop.index }}",
+            "name_": "{{ a.name }}",
+            "type_": "action",
+            "fill": "red",
+            "flow_id": {{ flow_id }},
+            "data": {
+                "group_id": {{ group_id }},
+                "customer_id": "{{ customer_id }}",
+                "plugin_id": {{ a.plugin_id }}
+                "params": [
+                    {% for p in a.params %}
+                    {
+                        "param_type": "{{ p.param_type }}",
+                        "param_name": "{{ p.param_name }}",
+                        "param_value": "{{ p.param_value }}"
+                    }{% if loop.index < loop.length %},{% endif %}
+                    {% endfor %}
+                ]
+            }
+        }{% if loop.index < loop.length %},{% endif %}
+        {% endfor %}
+    ],
+    "connections": [
+        {% for conn in connections %}
+        {
+            "id_": "conn{{ loop.index }}",
+            "name_": "{{ conn.name }}",
+            "type_": "pipeline",
+            "source_id": "{{ conn.source_id }}",
+            "target_id": "{{ conn.target_id }}",
+            "data": {
+                "src_params": [
+                    {% for p in conn.src_params %}
+                    {
+                        "param_type": "{{ p.param_type }}",
+                        "param_name": "{{ p.param_name }}",
+                        "param_value": "{{ p.param_value }}"
+                    }{% if loop.index < loop.length %},{% endif %}
+                    {% endfor %}
+                ],
+                "tar_params": [
+                    {% for p in conn.tar_params %}
+                    {
+                        "param_type": "{{ p.param_type }}",
+                        "param_name": "{{ p.param_name }}",
+                        "param_value": "{{ p.param_value }}"
+                    }{% if loop.index < loop.length %},{% endif %}
+                    {% endfor %}
+                ]
+            }
+        }{% if loop.index < loop.length %},{% endif %}
+        {% endfor %}
+    ]
+}

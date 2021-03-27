@@ -26,4 +26,40 @@ customers:
     admin_password: "quantott0"
     postinstall:
       site: ""
-      scenario_flow: ""
+      scenarios:
+        - group: group_name
+          name: flow_name
+          description: ""
+          nodes:
+            streams:
+              - id: ""
+                name: s_name
+                description: stream_description
+                device_uris:
+                  - video://
+                  - audio://
+            classifiers:
+              - id: ""
+                name: c_name
+                description: classifier_description
+                plugin: ""
+                params: {}
+            triggers:
+              - id: ""
+                name: t_name
+                description: trigger_description
+                plugin: ""
+                observables: []
+                params: {}
+            actions:
+              - id: ""
+                name: a_name
+                description: action_description
+                plugin: ""
+                params: {}
+          connections:
+            - id: ""
+              source_id: ""
+              target_id: ""
+              src_params: {}
+              tar_params: {}

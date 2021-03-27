@@ -1,11 +1,11 @@
-from typing import Dict
+from typing import Dict, List
 import click
 import yaml
 import pprint
 import subprocess
 import base64
 import time
-import sys
+import uuid
 from dotted_dict import DottedDict
 from pathlib import Path
 
@@ -211,6 +211,56 @@ def prep_k8s_customer_env(customer_id: str, k8s_config: DottedDict):
     p = subprocess.run(cfg_args)
     p.check_returncode()
 
+def create_sites(sites: List, api_client):
+    if not sites or not api_client:
+        return
+    for site_name in sites:
+        click.echo(f"Creating {site_name} site... ", nl=False)
+        try:
+            site_api = SiteApi(api_client)
+            my_site = Site(site_name=site_name)
+            site_api.add_site(my_site)
+            click.echo("Done")
+        except Exception as e:
+            click.echo("Error")
+            click.echo(f"Exception adding site {site_name}: {str(e)}")
+
+def create_scenarios(scenarios: List, api_client):
+    if not scenarios or not api_client:
+        return
+    scenario_api = ScenarioApi(api_client)
+    groups = set()
+    for scenario in scenarios:
+        if scenario.group not in groups.keys():
+            groups.add(scenario.group)
+            sg = ScenarioGroup(
+                group_name = scenario.group,
+                description=""
+            )
+            scenario_api.add_scenario_group(sg)
+        group_id = list(
+            filter(
+                lambda x: x.group_name == scenario.group,
+                scenario_api.get_scenario_groups()
+            )
+        )[0].id
+        sf = ScenarioFlow(
+            flow_name=scenario.name,
+            description=scenario.description,
+            group_id=group_id,
+            flow_type="action",
+            enabled=False
+        )
+        scenario_api.add_scenario_flow(sf)
+        flow_id = list(
+            filter(
+                lambda x: x.flow_name == scenario.name,
+                scenario_api.get_scenario_flows()
+            )
+        )[0].id
+        graph_vars = scenario.nodes
+        graph_vars.connections = scenario.connections
+
 def create_objects(customer: DottedDict, product_config: DottedDict):
     client_id = getvar("CUSTOMER_ID")
     client_secret = getvar("HYDRA_CUSTOMER_CLIENT_SECRET")
@@ -228,17 +278,8 @@ def create_objects(customer: DottedDict, product_config: DottedDict):
     config.host = f"https://{portal_fqdn}:{mgmt_port}/api/v1"
     api_client = ApiClient(config)
     postinstall_config = customer.postinstall
-    if postinstall_config.site:
-        site_name = postinstall_config.site
-        click.echo(f"Creating {site_name} site... ", nl=False)
-        try:
-            site_api = SiteApi(api_client)
-            my_site = Site(site_name=site_name)
-            site_api.add_site(my_site)
-            click.echo("Done")
-        except Exception as e:
-            click.echo("Error")
-            click.echo(f"Exception adding site {site_name}: {str(e)}")
+    create_sites(postinstall_config.sites, api_client)
+    # create_scenarios(postinstall_config.scenarios, api_client)
     time.sleep(1.0)
 
 @click.group()
