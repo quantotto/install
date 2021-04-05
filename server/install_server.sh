@@ -18,10 +18,11 @@ fi
 
 ACCOUNT=quantotto
 APP_FOLDER=/opt/quantotto
-VERSION=$1
-if [ ! -z ${VERSION} ]; then
-    VERSION="~=${VERSION}.0"
-fi
+USER_VERSION="3.3"
+if [ ! -z $1 ]; then
+    USER_VERSION=$1
+
+VERSION="~=${USER_VERSION}.0"
 
 echo "Updating system"
 sudo apt-get -yy update && sudo apt-get -yy upgrade
