@@ -25,7 +25,7 @@ customers:
     admin_lname: Totto
     admin_password: "quantott0"
     postinstall:
-      site: ""
+      sites: []
       scenarios:
         - group: group_name
           name: flow_name
