@@ -21,7 +21,7 @@ APP_FOLDER=/opt/quantotto
 USER_VERSION="3.3"
 if [ ! -z $1 ]; then
     USER_VERSION=$1
-
+fi
 VERSION="~=${USER_VERSION}.0"
 
 echo "Updating system"
