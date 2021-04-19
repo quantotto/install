@@ -38,6 +38,7 @@ data:
   ACTOR_SYSTEM_LISTEN_ON: {{ .Values.portal.asys.listenOn | quote }}
   MC_ACTOR_SYSTEM: {{ .Values.portal.asys.master | quote }}
   ACTOR_SYSTEM_PORT_RANGE: {{ .Values.portal.asys.portsRange | quote }}
+  MOTION_THRESHOLD: 1800
 ---
 apiVersion: v1
 kind: ConfigMap
