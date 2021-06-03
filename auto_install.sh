@@ -54,4 +54,4 @@ REQUESTS_CA_BUNDLE=$QUANTOTTO_CA_CERT python auto_install.py postinstall --targe
 popd
 PUSHD_FLAG=0
 
-echo "*** Auto installation of Quantotto v${VERSION} ${TARGET} target is complete ***"
+echo "*** Auto installation of Quantotto ${TARGET} target is complete ***"
