@@ -1,5 +1,5 @@
 product:
-  quantotto_version: 3.3.0
+  quantotto_version: 3.6.0
   server_fqdn: portal.example.com
   server_ip: 192.168.0.100
   management_port: 443

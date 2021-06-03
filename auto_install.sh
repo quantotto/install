@@ -20,21 +20,16 @@ trap onerror ERR
 
 if [ -z $1 ]; then
     echo "No target specified"
-    echo "Usage $0 <target: k8s or standalone> <config name> <version>"
+    echo "Usage $0 <target: k8s or standalone> <config name> [version]"
     exit 1
 fi
 
 if [ -z $2 ]; then
     echo "No config name specified"
-    echo "Usage $0 <target: k8s or standalone> <config name> <version>"
+    echo "Usage $0 <target: k8s or standalone> <config name> [version]"
     exit 1
 fi
 
-if [ -z $3 ]; then
-    echo "No version specified"
-    echo "Usage $0 <target: k8s or standalone> <config name> <version>"
-    exit 1
-fi
 
 TARGET=$1
 CONFIG_NAME=$2
