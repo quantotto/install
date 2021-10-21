@@ -3,4 +3,4 @@ name: qcustomerconfig
 description: Quantotto Helm chart for customer configuration
 type: application
 version: 0.1.0
-appVersion: 3.1.0
+appVersion: 3.10.0
