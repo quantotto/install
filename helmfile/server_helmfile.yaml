@@ -136,6 +136,7 @@ releases:
       - ./server/values/management_api.yaml.gotmpl
     needs:
       - "{{ .Values.serverNamespace }}/config-api"
+      - "{{ .Values.serverNamespace }}/neo4j"
 
   - name: faces-archive-api
     namespace: "{{ .Values.serverNamespace }}"
