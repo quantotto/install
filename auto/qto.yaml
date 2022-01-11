@@ -1,0 +1,28 @@
+product:
+  quantotto_version: 3.12.0
+  server_fqdn: qtosrv
+  server_ip: 192.168.0.13
+  management_port: 443
+  frames_port: 15000
+  internal_host_subnet: 192.168.0.0/24
+  docker_subnet: 172.21.0.0/16
+  retention_days: 3
+  server_password: "quantott0"
+
+k8s:
+  cluster_domain: example.com
+  namespace: quantotto
+  storage_class: my-local-storage
+  encrypt_secrets: "pgp:753CAD4D4B26B9C4C4A043C8CBECFF86FD2D91FC"
+
+customers:
+  - id: qto
+    name: Quantotto
+    admin_email: quantottoinc@example.com
+    admin_login: quantotto
+    admin_fname: Quan
+    admin_mname: ""
+    admin_lname: Totto
+    admin_password: "quantott0"
+    postinstall:
+      sites: ["home"]
