@@ -215,15 +215,18 @@ def create_sites(sites: List, api_client):
     if not sites or not api_client:
         return
     for site_name in sites:
-        click.echo(f"Creating {site_name} site... ", nl=False)
-        try:
-            site_api = SiteApi(api_client)
-            my_site = Site(site_name=site_name)
-            site_api.add_site(my_site)
-            click.echo("Done")
-        except Exception as e:
-            click.echo("Error")
-            click.echo(f"Exception adding site {site_name}: {str(e)}")
+        while True:
+            click.echo(f"Creating {site_name} site... ", nl=False)
+            try:
+                site_api = SiteApi(api_client)
+                my_site = Site(site_name=site_name)
+                site_api.add_site(my_site)
+                click.echo("Done")
+                break
+            except Exception as e:
+                click.echo(f"Exception adding site {site_name}: {str(e)}")
+                click.echo("Retrying...")
+                continue
 
 def create_scenarios(scenarios: List, api_client):
     if not scenarios or not api_client:
