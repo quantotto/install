@@ -13,7 +13,8 @@ function onerror() {
 
 trap onerror ERR
 
-supported_python="3.6"
+supported_python_major="3"
+supported_python_minor="6"
 supported_ubuntu="16.04"
 ACCOUNT=quantotto
 CURRENT_ERROR_MSG="User ${ACCOUNT} doesn't exist or current user is not in ${ACCOUNT} group"
@@ -33,11 +34,17 @@ fi
 CURRENT_ERROR_MSG="Incompatible Python; should be ${supported_python}+"
 echo "checking Python version"
 pyver=`python3 -c "import sys; vi = sys.version_info; print(f'{vi.major}.{vi.minor}')"`
-if awk 'BEGIN { exit !('${pyver}' < '${supported_python}')}'; then
-    echo -e "${RED}Incompatibe Python version (${pyver}); Should be ${supported_python}+${NC}"
+pyvermajor=`python3 -c "import sys; vi = sys.version_info; print(f'{vi.major}')"`
+pyverminor=`python3 -c "import sys; vi = sys.version_info; print(f'{vi.minor}')"`
+if awk 'BEGIN { exit !('${pyvermajor}' < '${supported_python_major}')}'; then
+    echo -e "${RED}Incompatibe major Python version (${pyvermajor}); Should be ${supported_python_major}+${NC}"
     exit 1
 fi
-echo -e "${GREEN}Python ${pyver} - success${NC}" 
+if awk 'BEGIN { exit !('${pyverminor}' < '${supported_python_minor}')}'; then
+    echo -e "${RED}Incompatibe minor Python version (${pyverminor}); Should be ${supported_python_minor}+${NC}"
+    exit 1
+fi
+echo -e "${GREEN}Python ${pyver} - success${NC}"
 
 CURRENT_ERROR_MSG="Docker not found or not configured"
 echo "checking docker"
@@ -58,4 +65,3 @@ if awk 'BEGIN { exit !('${ubuntu_release}' < '${supported_ubuntu}')}'; then
     exit 1
 fi
 echo -e "${GREEN}Ubuntu ${ubuntu_release} - success${NC}"
-
