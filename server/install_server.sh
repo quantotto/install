@@ -50,13 +50,16 @@ echo "Done"
 
 echo -n "Creating Python3 virtual environment under ${APP_FOLDER}/.venv... "
 if [ -e ${APP_FOLDER}/.venv ]; then
-    rm -rf ${APP_FOLDER}/.venv
+    # rm -rf ${APP_FOLDER}/.venv
+    echo "Using existing virtual environment"
+else
+    python3 -m venv ${APP_FOLDER}/.venv
+    echo "Done"
 fi
-python3 -m venv ${APP_FOLDER}/.venv
-echo "Done"
 
 source ${APP_FOLDER}/.venv/bin/activate
-pip install -U pip
+python -m pip install -U pip
+pip install -U setuptool wheel build
 echo "Activated virtual environment"
 
 echo "Installing Quantotto Server CLI package"
