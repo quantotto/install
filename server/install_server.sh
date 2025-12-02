@@ -18,7 +18,7 @@ fi
 
 ACCOUNT=quantotto
 APP_FOLDER=/opt/quantotto
-USER_VERSION="3.12"
+USER_VERSION="2025.2"
 if [ ! -z $1 ]; then
     USER_VERSION=$1
 fi
