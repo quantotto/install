@@ -59,7 +59,7 @@ fi
 
 source ${APP_FOLDER}/.venv/bin/activate
 python -m pip install -U pip
-pip install -U setuptool wheel build
+pip install -U setuptools wheel build
 echo "Activated virtual environment"
 
 echo "Installing Quantotto Server CLI package"
