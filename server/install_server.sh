@@ -63,7 +63,12 @@ pip install -U setuptools wheel build
 echo "Activated virtual environment"
 
 echo "Installing Quantotto Server CLI package"
-pip install -U --index-url http://devops.quantotto.io:16280 --trusted-host devops.quantotto.io quantotto.cli_server${VERSION} quantotto.cli_k8s${VERSION}
+# Allow pip to fall back to the public PyPI for build-system dependencies
+# (PEP 517 build isolation needs access to packages like setuptools/wheel).
+pip install -U --index-url http://devops.quantotto.io:16280 \
+    --extra-index-url https://pypi.org/simple \
+    --trusted-host devops.quantotto.io \
+    quantotto.cli_server${VERSION} quantotto.cli_k8s${VERSION}
 
 echo "Downloading rpi image builder"
 PI_GEN_RELEASE=2020-12-02-raspbian-buster
