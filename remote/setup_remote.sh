@@ -16,6 +16,12 @@ echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
 sudo ssh-keygen -t rsa -P "" -f /root/.ssh/id_rsa
 
+# delete old known hosts entry for portal.quantotto.io
+sudo ssh-keygen -R portal.quantotto.io
+
+# add portal.quantotto.io to known hosts to avoid prompts
+sudo ssh-keyscan -H portal.quantotto.io >> /root/.ssh/known_hosts
+
 sudo tee /etc/systemd/system/tunnel.service > /dev/null << EOF
 [Unit]
 Description=SSH Tunnel with target server
