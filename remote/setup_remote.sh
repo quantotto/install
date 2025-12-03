@@ -7,11 +7,12 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Check if service was already set up
-if systemctl is-active --quiet tunnel.service; then
-    echo "SSH Tunnel service is already running."
+# Check if service was already configured (tunnerl.service exists)
+if [ -f /etc/systemd/system/tunnel.service ]; then
+    echo "SSH Tunnel service is already configured."
     exit 0
 fi
+echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
 sudo ssh-keygen -P "" -f /root/.ssh/id_rsa
 
@@ -34,5 +35,6 @@ sudo systemctl start tunnel.service
 
 echo "SSH Tunnel setup complete. The service is running and will start on boot."
 echo "Add the following public key to your portal.quantotto.io authorized_keys file:"
+echo ""
 sudo cat /root/.ssh/id_rsa.pub
 echo ""
