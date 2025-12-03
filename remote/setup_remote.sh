@@ -14,7 +14,7 @@ if [ -f /etc/systemd/system/tunnel.service ]; then
 fi
 echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
-sudo ssh-keygen -P "" -f /root/.ssh/id_rsa
+sudo ssh-keygen -t rsa -P "" -f /root/.ssh/id_rsa
 
 sudo tee /etc/systemd/system/tunnel.service > /dev/null << EOF
 [Unit]
