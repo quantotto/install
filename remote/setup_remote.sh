@@ -20,7 +20,9 @@ sudo ssh-keygen -t rsa -P "" -f /root/.ssh/id_rsa
 sudo ssh-keygen -R portal.quantotto.io
 
 # add portal.quantotto.io to known hosts to avoid prompts
-sudo ssh-keyscan -H portal.quantotto.io >> /root/.ssh/known_hosts
+# Use a tee with sudo because shell redirection (>>) runs as the calling user
+# and would otherwise fail writing to a root-owned file.
+ssh-keyscan -H portal.quantotto.io | sudo tee -a /root/.ssh/known_hosts >/dev/null
 
 sudo tee /etc/systemd/system/tunnel.service > /dev/null << EOF
 [Unit]
