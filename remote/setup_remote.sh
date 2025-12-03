@@ -7,6 +7,12 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+# Check if service was already set up
+if systemctl is-active --quiet tunnel.service; then
+    echo "SSH Tunnel service is already running."
+    exit 0
+fi
+
 sudo ssh-keygen -P "" -f /root/.ssh/id_rsa
 
 sudo tee /etc/systemd/system/tunnel.service > /dev/null << EOF
