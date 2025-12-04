@@ -15,6 +15,7 @@ fi
 echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
 # generate ssh key pair without passphrase; overwrite existing keys if any
+sudo mkdir -p /root/.ssh
 sudo ssh-keygen -y -t rsa -P "" -f /root/.ssh/id_rsa
 
 sudo touch /root/.ssh/known_hosts
