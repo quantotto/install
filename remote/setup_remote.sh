@@ -14,8 +14,10 @@ if [ -f /etc/systemd/system/tunnel.service ]; then
 fi
 echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
-sudo ssh-keygen -t rsa -P "" -f /root/.ssh/id_rsa
+# generate ssh key pair without passphrase; overwrite existing keys if any
+sudo ssh-keygen -y -t rsa -P "" -f /root/.ssh/id_rsa
 
+sudo touch /root/.ssh/known_hosts
 # delete old known hosts entry for portal.quantotto.io
 sudo ssh-keygen -R portal.quantotto.io
 
