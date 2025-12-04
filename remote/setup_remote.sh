@@ -16,7 +16,10 @@ echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
 # generate ssh key pair without passphrase; overwrite existing keys if any
 sudo mkdir -p /root/.ssh
-sudo ssh-keygen -y -t rsa -P "" -f /root/.ssh/id_rsa
+# remove any existing keys to avoid interactive overwrite prompt
+sudo rm -f /root/.ssh/id_rsa /root/.ssh/id_rsa.pub
+# create a new RSA keypair with an empty passphrase
+sudo ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa -q
 
 sudo touch /root/.ssh/known_hosts
 # delete old known hosts entry for portal.quantotto.io
