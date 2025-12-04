@@ -8,10 +8,11 @@ if [ -z "$1" ]; then
 fi
 
 # Check if service was already configured (tunnerl.service exists)
-if [ -f /etc/systemd/system/tunnel.service ]; then
-    echo "SSH Tunnel service is already configured."
-    exit 0
-fi
+sudo rm -f /etc/systemd/system/tunnel.service
+#if [ -f /etc/systemd/system/tunnel.service ]; then
+#    echo "SSH Tunnel service is already configured."
+#    exit 0
+#fi
 echo "Setting up SSH Tunnel to portal.quantotto.io on port $1"
 
 # generate ssh key pair without passphrase; overwrite existing keys if any
