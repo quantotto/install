@@ -35,7 +35,7 @@ sudo apt-get -yy install \
     ${ARCHIVES} libcap2-bin grep \
     rsync xz-utils file git curl bc \
     python3-venv python3-dev python3-setuptools \
-    libsasl2-dev libldap2-dev libssl-dev \
+    libcap-dev libsasl2-dev libldap2-dev libssl-dev \
     docker-compose build-essential \
     libpq-dev postgresql-client nano
 
